@@ -80,6 +80,15 @@
   --shadow-gold: 0 0 30px rgba(212, 175, 55, .15);
   --transition: .3s cubic-bezier(.4, 0, .2, 1);
   --radius-card: 0px;
+
+  /* ── Footer-specific tokens (dark footer on ALL themes) ── */
+  --footer-text:        rgba(255,255,255,.82);  /* primary readable text */
+  --footer-text-muted:  rgba(255,255,255,.55);  /* secondary / tagline */
+  --footer-text-dim:    rgba(255,255,255,.38);  /* descriptions */
+  --footer-link:        rgba(255,255,255,.65);  /* nav links */
+  --footer-link-hover:  rgba(255,255,255,.95);  /* nav links hover */
+  --footer-border:      rgba(255,255,255,.10);  /* section dividers */
+  --footer-label:       rgba(255,255,255,.90);  /* column headings */
 }
 
 
