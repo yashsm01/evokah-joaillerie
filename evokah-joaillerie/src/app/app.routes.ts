@@ -6,12 +6,16 @@ const collection = () =>
 const cart = () =>
   import('./features/cart/cart.component').then(m => m.CartComponent);
 
+const story = () =>
+  import('./features/story/story.component').then(m => m.StoryComponent);
+
 export const routes: Routes = [
 
   // ── Theme-prefixed routes  /:theme/:page ──────────────────────
   { path: ':theme/engagement', loadComponent: collection },
   { path: ':theme/wedding',    loadComponent: collection },
   { path: ':theme/cart',       loadComponent: cart       },
+  { path: ':theme/story',      loadComponent: story      },
   { path: ':theme/home',       loadComponent: collection },  // home with theme
 
   // ── Standard routes (no theme prefix) ───────────────────────
@@ -19,6 +23,7 @@ export const routes: Routes = [
   { path: 'engagement', loadComponent: collection },
   { path: 'wedding',    loadComponent: collection },
   { path: 'cart',       loadComponent: cart       },
+  { path: 'story',      loadComponent: story      },
 
   { path: '**', redirectTo: '' },
 ];

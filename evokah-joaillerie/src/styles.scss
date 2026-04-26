@@ -718,3 +718,85 @@ img {
   background-clip: text;
   animation: goldShimmer 4s linear infinite;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL RESPONSIVE — Mobile-first utilities
+   All components use these breakpoints for consistency
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Fluid typography ── */
+:root {
+  --text-scale: clamp(.85rem, 1.5vw + .5rem, 1rem);
+}
+
+/* ── Images never overflow ── */
+img, video, svg { max-width: 100%; height: auto; }
+
+/* ── Touch targets minimum size ── */
+button, a { min-height: 44px; min-width: 44px; }
+.nav-link, .mob-link { min-height: unset; min-width: unset; } /* nav exception */
+
+/* ── Prevent horizontal overflow globally ── */
+html, body { overflow-x: hidden; }
+
+/* ── Container responsive padding ── */
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+/* ── Responsive section spacing ── */
+.section-pad {
+  padding-block: clamp(60px, 10vw, 120px);
+}
+
+/* ── Grid helpers ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 560px)  { grid-template-columns: 1fr; }
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px)  { grid-template-columns: 1fr; }
+}
+
+/* ── Hide/show utilities ── */
+.hide-mobile  { @media (max-width: 768px)  { display: none !important; } }
+.hide-desktop { @media (min-width: 769px)  { display: none !important; } }
+.hide-tablet  { @media (max-width: 1024px) { display: none !important; } }
+
+/* ── Responsive modal overrides ── */
+@media (max-width: 768px) {
+  .modal-overlay { align-items: flex-end; }
+  .modal-content {
+    max-width: 100% !important;
+    max-height: 92dvh;
+    border-radius: 0;
+    overflow-y: auto;
+  }
+}
+
+/* ── Cart responsive ── */
+@media (max-width: 900px) {
+  .cart-layout { grid-template-columns: 1fr !important; }
+}
+
+/* ── Announcement bar hide on tiny screens ── */
+@media (max-width: 420px) {
+  .announcement-bar { display: none; }
+}
