@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ThemeService } from './core/services/theme.service';
+import { SmoothScrollService } from './core/services/smooth-scroll.service';
 
 @Component({
   selector: 'app-root',
@@ -19,18 +20,24 @@ import { ThemeService } from './core/services/theme.service';
   styles: [`main { min-height: 60vh; }`],
 })
 export class App implements OnInit {
-  private router  = inject(Router);
-  private themeSvc = inject(ThemeService);
+  private router      = inject(Router);
+  private themeSvc    = inject(ThemeService);
+  private scrollSvc   = inject(SmoothScrollService);
 
   ngOnInit(): void {
-    // Apply theme for the initial load (no NavigationEnd fires on first paint)
+    // ── 1. Start smooth scroller ──────────────────────────
+    this.scrollSvc.init();
+
+    // ── 2. Apply theme for initial load ───────────────────
     this.themeSvc.applyForRoute(this.router.url);
 
-    // Re-apply theme on every subsequent navigation
+    // ── 3. On every navigation: swap theme + scroll to top ─
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
         this.themeSvc.applyForRoute(e.urlAfterRedirects);
+        // Instant jump to top between page transitions
+        this.scrollSvc.scrollToTop(true);
       });
   }
 }

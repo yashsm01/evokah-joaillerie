@@ -641,8 +641,12 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* CSS smooth-scroll disabled — JS lerp scroller handles this */
+  scroll-behavior: auto;
   font-size: 16px;
+  /* Custom scrollbar — luxury thin style */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) transparent;
 }
 
 body {
@@ -654,6 +658,15 @@ body {
   transition:
     background-color .5s cubic-bezier(.4,0,.2,1),
     color .5s cubic-bezier(.4,0,.2,1);
+}
+
+/* Webkit custom scrollbar — thin gold luxury bar */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: 2px;
+  &:hover { background: var(--gold); }
 }
 
 a {
