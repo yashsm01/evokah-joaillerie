@@ -23,14 +23,21 @@ export class SmoothScrollService implements OnDestroy {
   init(): void {
     if (typeof window === 'undefined') return;
 
+    // ── 1. Skip on touch devices ─────────────────────────
+    // Native touch scrolling is far superior to manual lerp.
+    // Overriding it often causes "rubber-banding" issues or lag.
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      console.log('SmoothScroll: Touch detected. Skipping override.');
+      return;
+    }
+
     // Use document.body as the scroll container
     this.scrollEl = document.documentElement;
     this.current  = window.scrollY;
     this.target   = window.scrollY;
 
-    // Listen to native scroll wheel / touch to update target only
+    // Listen to native scroll wheel / key to update target only
     window.addEventListener('wheel',       this.onWheel,  { passive: false });
-    window.addEventListener('touchmove',   this.onTouch,  { passive: true  });
     window.addEventListener('keydown',     this.onKey,    { passive: true  });
 
     // Start the animation loop outside Angular zone to avoid CD overhead
@@ -59,15 +66,6 @@ export class SmoothScrollService implements OnDestroy {
     this.target += e.deltaY * 1.2;
     this.clampTarget();
   };
-
-  private onTouch = (e: TouchEvent) => {
-    if (!e.touches[0]) return;
-    const delta = (this._lastTouchY ?? e.touches[0].clientY) - e.touches[0].clientY;
-    this._lastTouchY = e.touches[0].clientY;
-    this.target += delta * 1.5;
-    this.clampTarget();
-  };
-  private _lastTouchY: number | null = null;
 
   private onKey = (e: KeyboardEvent) => {
     const amounts: Record<string, number> = {
@@ -105,7 +103,6 @@ export class SmoothScrollService implements OnDestroy {
   ngOnDestroy(): void {
     cancelAnimationFrame(this.rafId);
     window.removeEventListener('wheel',     this.onWheel);
-    window.removeEventListener('touchmove', this.onTouch);
     window.removeEventListener('keydown',   this.onKey);
     this.running = false;
   }
