@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { environment } from '../environments/environment';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,18 @@ import { environment } from '../environments/environment';
   styles: [`main { min-height: 60vh; }`],
 })
 export class App implements OnInit {
-  ngOnInit() {
-    // Apply theme from environment config to <body>
-    document.body.setAttribute('data-theme', environment.theme);
+  private router  = inject(Router);
+  private themeSvc = inject(ThemeService);
+
+  ngOnInit(): void {
+    // Apply theme for the initial load (no NavigationEnd fires on first paint)
+    this.themeSvc.applyForRoute(this.router.url);
+
+    // Re-apply theme on every subsequent navigation
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        this.themeSvc.applyForRoute(e.urlAfterRedirects);
+      });
   }
 }
