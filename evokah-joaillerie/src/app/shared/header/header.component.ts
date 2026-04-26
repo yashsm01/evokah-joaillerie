@@ -21,10 +21,11 @@ export class HeaderComponent {
   themeMenuOpen = false;
 
   readonly themes: { key: ThemeName; label: string; dot: string }[] = [
-    { key: 'dark',  label: 'Ruby',  dot: '#C41230' },
-    { key: 'light', label: 'Pearl', dot: '#B8922A' },
-    { key: 'warm',  label: 'Linen', dot: '#b8813a' },
-    { key: 'ocean', label: 'Ocean', dot: '#1f7a8c' },
+    { key: 'dark',   label: 'Ruby',   dot: '#C41230' },
+    { key: 'light',  label: 'Pearl',  dot: '#B8922A' },
+    { key: 'warm',   label: 'Linen',  dot: '#b8813a' },
+    { key: 'ocean',  label: 'Ocean',  dot: '#1f7a8c' },
+    { key: 'silver', label: 'Silver', dot: '#a5a5a5' },
   ];
 
   toggleSearch()    { this.searchOpen    = !this.searchOpen; }

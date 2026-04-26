@@ -412,6 +412,99 @@
   --radius-card: 0px;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   THEME: SILVER — "Silver Lining"
+   Editorial monochrome — charcoal · steel · silver · near-white
+   Applied when <body data-theme="silver">
+
+   Palette:
+     #595959  Charcoal       — hero, footer, pill active, strong text
+     #7f7f7f  Steel gray     — secondary text, muted borders
+     #a5a5a5  Mid silver     — accent shimmer, stars, muted UI
+     #cccccc  Silver         — borders, pill bg, image panel
+     #f2f2f2  Near-white     — page bg, card bg
+══════════════════════════════════════════════════════════════ */
+[data-theme="silver"] {
+
+  /* ── Brand tones (from your palette) ── */
+  --charcoal:   #595959;   /* palette 1 — darkest */
+  --steel:      #7f7f7f;   /* palette 2 */
+  --mid-silver: #a5a5a5;   /* palette 3 */
+  --silver:     #cccccc;   /* palette 4 */
+  --near-white: #f2f2f2;   /* palette 5 — lightest */
+
+  /* ── Core Palette ── */
+  --ruby:           #595959;   /* charcoal replaces ruby */
+  --ruby-bright:    #7f7f7f;
+  --ruby-dark:      #3a3a3a;
+  --ruby-glow:      rgba(89,89,89,.18);
+  --gold:           #a5a5a5;   /* silver replaces gold */
+  --gold-light:     #cccccc;
+  --gold-dim:       rgba(165,165,165,.16);
+  --cream:          #595959;   /* charcoal on dark sections */
+  --warm-gray:      #7f7f7f;
+
+  /* ── Surfaces ── */
+  --bg-page:        #f2f2f2;   /* palette 5 — lightest page */
+  --bg-card:        #ffffff;   /* pure white cards */
+  --bg-card-hover:  #f5f5f5;
+  --bg-overlay:     rgba(242,242,242,.97);
+  --bg-hero:        #595959;   /* palette 1 — dramatic charcoal hero */
+  --bg-header:      rgba(255,255,255,.95);
+  --bg-footer:      #595959;   /* palette 1 — charcoal footer */
+  --bg-trust:       #cccccc;   /* palette 4 — silver strip */
+  --bg-nl:          #595959;   /* palette 1 — charcoal newsletter */
+  --bg-faq:         #f2f2f2;   /* palette 5 */
+  --bg-toolbar:     #e8e8e8;   /* between palette 4 & 5 */
+  --bg-modal:       #ffffff;
+  --bg-pill:        #cccccc;   /* palette 4 */
+  --bg-pill-active: #595959;   /* charcoal active */
+  --champagne:      #e8e8e8;   /* silver-gray image panel */
+
+  /* ── Text ── */
+  --text-primary:   #595959;   /* charcoal on light bg */
+  --text-secondary: #7f7f7f;   /* steel */
+  --text-muted:     #a5a5a5;   /* mid-silver */
+  --text-hero-title:#f2f2f2;   /* near-white on charcoal hero */
+  --text-hero-desc: #cccccc;   /* silver on charcoal */
+  --text-price:     #3a3a3a;   /* darkest for price emphasis */
+  --text-tag:       #f2f2f2;
+
+  /* ── Accents ── */
+  --accent:         #595959;   /* charcoal CTA */
+  --accent-hover:   #3a3a3a;   /* darker on hover */
+  --accent-text:    #f2f2f2;
+
+  /* ── Borders ── */
+  --border:         rgba(165,165,165,.40);
+  --border-card:    rgba(204,204,204,.70);
+  --border-hover:   rgba(89,89,89,.50);
+
+  /* ── Buttons ── */
+  --btn-primary-bg:   #595959;
+  --btn-primary-txt:  #f2f2f2;
+  --btn-ghost-bg:     transparent;
+  --btn-ghost-txt:    #595959;
+  --btn-ghost-brd:    rgba(89,89,89,.40);
+
+  /* ── Badges / Stars ── */
+  --star-color:     #a5a5a5;   /* silver stars */
+  --badge-bg:       #595959;
+  --badge-txt:      #f2f2f2;
+
+  /* ── Typography ── */
+  --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+
+  /* ── Shadows — cool neutral ── */
+  --shadow:         0 4px 24px rgba(89,89,89,.12);
+  --shadow-lg:      0 20px 50px rgba(89,89,89,.16), 0 0 0 1px rgba(204,204,204,.60);
+  --shadow-card:    0 4px 16px rgba(89,89,89,.08);
+  --shadow-gold:    0 0 28px rgba(165,165,165,.14);
+  --transition:     .3s cubic-bezier(.4,0,.2,1);
+  --radius-card:    0px;
+}
+
 /* ── RESET ──────────────────────────────────────── */
 *,
 *::before,
