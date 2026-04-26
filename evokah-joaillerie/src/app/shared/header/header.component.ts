@@ -25,7 +25,8 @@ export class HeaderComponent {
     { key: 'light',  label: 'Pearl',  dot: '#B8922A' },
     { key: 'warm',   label: 'Linen',  dot: '#b8813a' },
     { key: 'ocean',  label: 'Ocean',  dot: '#1f7a8c' },
-    { key: 'silver', label: 'Silver', dot: '#a5a5a5' },
+    { key: 'silver', label: 'Silver', dot: '#8898b0' },
+    { key: 'ivory',  label: 'Ivory',  dot: '#daddd8' },
   ];
 
   toggleSearch()    { this.searchOpen    = !this.searchOpen; }

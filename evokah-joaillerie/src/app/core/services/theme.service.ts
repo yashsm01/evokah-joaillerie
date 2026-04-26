@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 
-export type ThemeName = 'dark' | 'light' | 'warm' | 'ocean' | 'silver';
+export type ThemeName = 'dark' | 'light' | 'warm' | 'ocean' | 'silver' | 'ivory';
 
-export const VALID_THEMES = new Set<ThemeName>(['dark', 'light', 'warm', 'ocean', 'silver']);
+export const VALID_THEMES = new Set<ThemeName>(['dark', 'light', 'warm', 'ocean', 'silver', 'ivory']);
 
 /** Fallback theme when no theme prefix is in the URL */
 export const DEFAULT_THEME: ThemeName = 'ocean';

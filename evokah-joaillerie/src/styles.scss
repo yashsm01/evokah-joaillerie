@@ -413,94 +413,211 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   THEME: SILVER — "Silver Lining"
-   Editorial monochrome — charcoal · steel · silver · near-white
+   THEME: SILVER — "Platinum Atelier"
+   Polished sterling silver • deep graphite • icy platinum • white
    Applied when <body data-theme="silver">
 
-   Palette:
-     #595959  Charcoal       — hero, footer, pill active, strong text
-     #7f7f7f  Steel gray     — secondary text, muted borders
-     #a5a5a5  Mid silver     — accent shimmer, stars, muted UI
-     #cccccc  Silver         — borders, pill bg, image panel
-     #f2f2f2  Near-white     — page bg, card bg
+   Design intent: Real silver is NOT pure gray — it has cool blue
+   metallic undertones. This theme mimics polished sterling silver:
+   deep graphite-navy hero (like oxidised silver), cool ice-blue
+   surfaces, metallic shimmer accents, and crisp white cards.
+
+   Base palette (user):
+     #595959  Charcoal  →  used sparingly for type only
+     #7f7f7f  Steel     →  secondary text / muted
+     #a5a5a5  Silver    →  shimmer / muted UI
+     #cccccc  Light Ag  →  borders / pills
+     #f2f2f2  Near-wht  →  page background
+
+   Added cool-blue metallics to bring the "silver" to life:
+     #1c2b3a  Graphite-navy    — hero & footer (like oxidised silver)
+     #8898b0  Metallic silver  — primary shimmer/accent tone
+     #c4d0de  Ice silver       — trust strip / toolbar / image panel
+     #e8edf4  Cool white-blue  — page bg & hover states
 ══════════════════════════════════════════════════════════════ */
 [data-theme="silver"] {
 
-  /* ── Brand tones (from your palette) ── */
-  --charcoal:   #595959;   /* palette 1 — darkest */
-  --steel:      #7f7f7f;   /* palette 2 */
-  --mid-silver: #a5a5a5;   /* palette 3 */
-  --silver:     #cccccc;   /* palette 4 */
-  --near-white: #f2f2f2;   /* palette 5 — lightest */
+  /* ── User palette tokens ── */
+  --charcoal:    #595959;
+  --steel:       #7f7f7f;
+  --mid-silver:  #a5a5a5;
+  --silver-pale: #cccccc;
+  --near-white:  #f2f2f2;
 
-  /* ── Core Palette ── */
-  --ruby:           #595959;   /* charcoal replaces ruby */
-  --ruby-bright:    #7f7f7f;
-  --ruby-dark:      #3a3a3a;
-  --ruby-glow:      rgba(89,89,89,.18);
-  --gold:           #a5a5a5;   /* silver replaces gold */
-  --gold-light:     #cccccc;
-  --gold-dim:       rgba(165,165,165,.16);
-  --cream:          #595959;   /* charcoal on dark sections */
-  --warm-gray:      #7f7f7f;
+  /* ── Extended metallic palette ── */
+  --platinum:       #1c2b3a;   /* deep graphite-navy — oxidised silver */
+  --platinum-mid:   #2e4055;   /* slightly lighter graphite */
+  --silver-sheen:   #8898b0;   /* cool blue-silver metallic */
+  --silver-light:   #b8cad8;   /* ice silver shimmer */
+  --ice-silver:     #c4d0de;   /* cool toolbar / trust strip */
+  --cool-white:     #e8edf4;   /* blue-tinted page bg */
+
+  /* ── Core Palette (theme system hooks) ── */
+  --ruby:           #2e4055;   /* platinum-mid replaces ruby */
+  --ruby-bright:    #8898b0;   /* silver-sheen hover */
+  --ruby-dark:      #1c2b3a;   /* deep platinum */
+  --ruby-glow:      rgba(136,152,176,.22);
+  --gold:           #8898b0;   /* metallic silver replaces gold */
+  --gold-light:     #c4d0de;   /* ice silver shimmer highlight */
+  --gold-dim:       rgba(136,152,176,.14);
+  --cream:          #1c2b3a;   /* platinum for dark sections */
+  --warm-gray:      #7090a8;
 
   /* ── Surfaces ── */
-  --bg-page:        #f2f2f2;   /* palette 5 — lightest page */
-  --bg-card:        #ffffff;   /* pure white cards */
-  --bg-card-hover:  #f5f5f5;
-  --bg-overlay:     rgba(242,242,242,.97);
-  --bg-hero:        #595959;   /* palette 1 — dramatic charcoal hero */
-  --bg-header:      rgba(255,255,255,.95);
-  --bg-footer:      #595959;   /* palette 1 — charcoal footer */
-  --bg-trust:       #cccccc;   /* palette 4 — silver strip */
-  --bg-nl:          #595959;   /* palette 1 — charcoal newsletter */
-  --bg-faq:         #f2f2f2;   /* palette 5 */
-  --bg-toolbar:     #e8e8e8;   /* between palette 4 & 5 */
+  --bg-page:        #e8edf4;   /* cool blue-white page */
+  --bg-card:        #ffffff;   /* crisp white cards */
+  --bg-card-hover:  #f0f4f8;   /* cool hover */
+  --bg-overlay:     rgba(232,237,244,.97);
+  --bg-hero:        #1c2b3a;   /* deep graphite-navy — oxidised silver */
+  --bg-header:      rgba(248,250,253,.96);
+  --bg-footer:      #1c2b3a;   /* graphite footer */
+  --bg-trust:       #c4d0de;   /* ice silver strip */
+  --bg-nl:          #1c2b3a;   /* graphite newsletter */
+  --bg-faq:         #e8edf4;   /* cool page */
+  --bg-toolbar:     #d8e2ec;   /* slightly deeper ice silver toolbar */
   --bg-modal:       #ffffff;
-  --bg-pill:        #cccccc;   /* palette 4 */
-  --bg-pill-active: #595959;   /* charcoal active */
-  --champagne:      #e8e8e8;   /* silver-gray image panel */
+  --bg-pill:        #c4d0de;   /* ice silver pills */
+  --bg-pill-active: #1c2b3a;   /* graphite active pill */
+  --champagne:      #d8e2ec;   /* cool silver image panel */
 
   /* ── Text ── */
-  --text-primary:   #595959;   /* charcoal on light bg */
-  --text-secondary: #7f7f7f;   /* steel */
-  --text-muted:     #a5a5a5;   /* mid-silver */
-  --text-hero-title:#f2f2f2;   /* near-white on charcoal hero */
-  --text-hero-desc: #cccccc;   /* silver on charcoal */
-  --text-price:     #3a3a3a;   /* darkest for price emphasis */
-  --text-tag:       #f2f2f2;
+  --text-primary:   #1c2b3a;   /* deep graphite — crisp & luxurious */
+  --text-secondary: #3a5068;   /* medium platinum-blue */
+  --text-muted:     #7090a8;   /* cool steel muted */
+  --text-hero-title:#f0f4f8;   /* icy white on dark hero */
+  --text-hero-desc: #c4d0de;   /* ice silver on graphite */
+  --text-price:     #1c2b3a;   /* strong graphite price */
+  --text-tag:       #e8edf4;
 
   /* ── Accents ── */
-  --accent:         #595959;   /* charcoal CTA */
-  --accent-hover:   #3a3a3a;   /* darker on hover */
-  --accent-text:    #f2f2f2;
+  --accent:         #2e4055;   /* platinum-mid CTA */
+  --accent-hover:   #1c2b3a;   /* deeper graphite hover */
+  --accent-text:    #f0f4f8;
 
-  /* ── Borders ── */
-  --border:         rgba(165,165,165,.40);
-  --border-card:    rgba(204,204,204,.70);
-  --border-hover:   rgba(89,89,89,.50);
+  /* ── Borders — cool blue-silver ── */
+  --border:         rgba(136,152,176,.28);
+  --border-card:    rgba(196,208,222,.70);
+  --border-hover:   rgba(136,152,176,.60);
 
   /* ── Buttons ── */
-  --btn-primary-bg:   #595959;
-  --btn-primary-txt:  #f2f2f2;
+  --btn-primary-bg:   #2e4055;
+  --btn-primary-txt:  #f0f4f8;
   --btn-ghost-bg:     transparent;
-  --btn-ghost-txt:    #595959;
-  --btn-ghost-brd:    rgba(89,89,89,.40);
+  --btn-ghost-txt:    #2e4055;
+  --btn-ghost-brd:    rgba(46,64,85,.40);
 
   /* ── Badges / Stars ── */
-  --star-color:     #a5a5a5;   /* silver stars */
-  --badge-bg:       #595959;
-  --badge-txt:      #f2f2f2;
+  --star-color:     #8898b0;   /* metallic silver stars ★ */
+  --badge-bg:       #2e4055;   /* platinum badge */
+  --badge-txt:      #e8edf4;
 
   /* ── Typography ── */
   --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-sans:      'Inter', system-ui, sans-serif;
 
-  /* ── Shadows — cool neutral ── */
-  --shadow:         0 4px 24px rgba(89,89,89,.12);
-  --shadow-lg:      0 20px 50px rgba(89,89,89,.16), 0 0 0 1px rgba(204,204,204,.60);
-  --shadow-card:    0 4px 16px rgba(89,89,89,.08);
-  --shadow-gold:    0 0 28px rgba(165,165,165,.14);
+  /* ── Shadows — cool blue-metallic ── */
+  --shadow:         0 4px 24px rgba(28,43,58,.14);
+  --shadow-lg:      0 20px 50px rgba(28,43,58,.18), 0 0 0 1px rgba(196,208,222,.55);
+  --shadow-card:    0 4px 16px rgba(28,43,58,.08);
+  --shadow-gold:    0 0 30px rgba(136,152,176,.20);  /* metallic silver glow */
+  --transition:     .3s cubic-bezier(.4,0,.2,1);
+  --radius-card:    0px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THEME: IVORY — "Ivory Noir"
+   Deep ebony • warm sage • warm linen • cool off-white • ghost white
+   Applied when <body data-theme="ivory">
+
+   Palette:
+     #1c1c1c  Deep ebony       — hero, footer, pill active, text
+     #daddd8  Warm sage gray   — image panel, toolbar, borders
+     #ecebe4  Warm linen       — trust strip, warm card sections
+     #eef0f2  Cool off-white   — page background, FAQ
+     #fafaff  Ghost white      — cards, modal, brightest surfaces
+
+   Aesthetic: High-fashion editorial luxury — like Vogue jewellery
+   spreads. Crisp, minimal, timeless. Ebony anchors the dark
+   sections; ghost white makes diamonds and gems pop; warm sage
+   adds organic warmth without muddying the palette.
+══════════════════════════════════════════════════════════════ */
+[data-theme="ivory"] {
+
+  /* ── Brand palette tokens ── */
+  --ebony:        #1c1c1c;   /* palette 1 — deep almost-black */
+  --sage-gray:    #daddd8;   /* palette 2 — warm sage */
+  --warm-linen:   #ecebe4;   /* palette 3 — warm off-white linen */
+  --cool-offwhite:#eef0f2;   /* palette 4 — cool off-white */
+  --ghost-white:  #fafaff;   /* palette 5 — near pure white */
+
+  /* ── Core Palette (theme system hooks) ── */
+  --ruby:           #1c1c1c;   /* ebony replaces ruby as anchor */
+  --ruby-bright:    #3d3d3a;   /* warm dark hover */
+  --ruby-dark:      #0a0a0a;   /* near-black deep */
+  --ruby-glow:      rgba(28,28,28,.16);
+  --gold:           #a09a94;   /* warm taupe shimmer — replaces gold */
+  --gold-light:     #c8c2bc;   /* lighter taupe shimmer */
+  --gold-dim:       rgba(160,154,148,.14);
+  --cream:          #1c1c1c;   /* ebony for dark sections */
+  --warm-gray:      #8a8680;
+
+  /* ── Surfaces ── */
+  --bg-page:        #eef0f2;   /* palette 4 — cool off-white page */
+  --bg-card:        #fafaff;   /* palette 5 — ghost white cards */
+  --bg-card-hover:  #f4f4fa;
+  --bg-overlay:     rgba(238,240,242,.97);
+  --bg-hero:        #1c1c1c;   /* palette 1 — deep ebony hero */
+  --bg-header:      rgba(250,250,255,.96);
+  --bg-footer:      #1c1c1c;   /* palette 1 — ebony footer */
+  --bg-trust:       #ecebe4;   /* palette 3 — warm linen strip */
+  --bg-nl:          #1c1c1c;   /* ebony newsletter */
+  --bg-faq:         #eef0f2;   /* palette 4 */
+  --bg-toolbar:     #daddd8;   /* palette 2 — warm sage toolbar */
+  --bg-modal:       #fafaff;   /* ghost white modal */
+  --bg-pill:        #daddd8;   /* palette 2 — sage pill */
+  --bg-pill-active: #1c1c1c;   /* ebony active */
+  --champagne:      #ecebe4;   /* palette 3 — warm linen image panel */
+
+  /* ── Text ── */
+  --text-primary:   #1c1c1c;   /* deep ebony — maximum legibility */
+  --text-secondary: #3d3d3a;   /* warm dark brown-gray */
+  --text-muted:     #8a8680;   /* warm mid-gray */
+  --text-hero-title:#fafaff;   /* ghost white on ebony */
+  --text-hero-desc: #daddd8;   /* warm sage on ebony */
+  --text-price:     #1c1c1c;   /* strong ebony price */
+  --text-tag:       #fafaff;
+
+  /* ── Accents ── */
+  --accent:         #1c1c1c;   /* ebony CTA */
+  --accent-hover:   #3d3d3a;   /* warm dark hover */
+  --accent-text:    #fafaff;
+
+  /* ── Borders ── */
+  --border:         rgba(218,221,216,.70);   /* sage gray borders */
+  --border-card:    rgba(218,221,216,.55);
+  --border-hover:   rgba(28,28,28,.30);      /* ebony hover border */
+
+  /* ── Buttons ── */
+  --btn-primary-bg:   #1c1c1c;
+  --btn-primary-txt:  #fafaff;
+  --btn-ghost-bg:     transparent;
+  --btn-ghost-txt:    #1c1c1c;
+  --btn-ghost-brd:    rgba(28,28,28,.35);
+
+  /* ── Badges / Stars ── */
+  --star-color:     #a09a94;   /* warm taupe stars */
+  --badge-bg:       #1c1c1c;   /* ebony badge */
+  --badge-txt:      #fafaff;
+
+  /* ── Typography ── */
+  --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+
+  /* ── Shadows — clean warm-neutral ── */
+  --shadow:         0 4px 24px rgba(28,28,28,.10);
+  --shadow-lg:      0 20px 50px rgba(28,28,28,.14), 0 0 0 1px rgba(218,221,216,.55);
+  --shadow-card:    0 4px 16px rgba(28,28,28,.07);
+  --shadow-gold:    0 0 28px rgba(160,154,148,.16);
   --transition:     .3s cubic-bezier(.4,0,.2,1);
   --radius-card:    0px;
 }
