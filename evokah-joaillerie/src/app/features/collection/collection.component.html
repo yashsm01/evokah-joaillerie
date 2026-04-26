@@ -1,0 +1,196 @@
+<!-- ░░ HERO ░░ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-diamonds">
+      <span class="deco-diamond d1">◆</span>
+      <span class="deco-diamond d2">◇</span>
+      <span class="deco-diamond d3">◆</span>
+      <span class="deco-diamond d4">◇</span>
+    </div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">The Evokah Collection</p>
+    <h1 class="hero-title" *ngIf="collectionType() === 'engagement'">Engagement<br /><em>Rings</em></h1>
+    <h1 class="hero-title" *ngIf="collectionType() === 'wedding'">Wedding<br /><em>Bands</em></h1>
+    <p class="hero-desc" *ngIf="collectionType() === 'engagement'">Conceived as personal signatures — emotion shaped through intention, proportion, and ethical artisanship.</p>
+    <p class="hero-desc" *ngIf="collectionType() === 'wedding'">Symbolize your forever with handcrafted bands designed for comfort, durability, and timeless elegance.</p>
+    <div class="hero-ctas">
+      <a href="#collection" class="btn btn-primary">Shop the Collection</a>
+      <a href="#consult" class="btn btn-ghost">Book a Consultation</a>
+    </div>
+    <div class="hero-badges">
+      <div class="badge"><span class="badge-icon">♻</span><span>Recycled Gold</span></div>
+      <div class="badge"><span class="badge-icon">◈</span><span>Ethical Diamonds</span></div>
+      <div class="badge"><span class="badge-icon">✦</span><span>Handcrafted</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll" (click)="scrollTo('collection')">
+    <span>Explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ░░ STYLE PILLS ░░ -->
+<section class="style-categories">
+  <div class="container">
+    <p class="section-eyebrow">Shop by Style</p>
+    <div class="style-grid">
+      <button *ngFor="let p of stylePills()"
+              class="style-pill"
+              [class.active]="filters().style === p.value"
+              (click)="setStyle(p.value)">
+        {{ p.label }}
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ TOOLBAR ░░ -->
+<section class="collection-toolbar" id="collection">
+  <div class="container toolbar-inner">
+    <p class="result-count">Showing <strong>{{ filteredProducts().length }}</strong> product{{ filteredProducts().length !== 1 ? 's' : '' }}</p>
+    <div class="toolbar-right">
+      <div class="filter-group">
+        <label>Metal</label>
+        <select [ngModel]="filters().metal" (ngModelChange)="setMetal($event)">
+          <option value="all">All Metals</option>
+          <option value="yellow-gold">Yellow Gold</option>
+          <option value="white-gold">White Gold</option>
+          <option value="rose-gold">Rose Gold</option>
+          <option value="platinum">Platinum</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Price</label>
+        <select [ngModel]="filters().priceGroup" (ngModelChange)="setPriceGroup($event)">
+          <option value="all">Any Price</option>
+          <option value="under3000">Under $3,000</option>
+          <option value="3000-5000">$3,000 – $5,000</option>
+          <option value="5000-10000">$5,000 – $10,000</option>
+          <option value="over10000">Over $10,000</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Sort</label>
+        <select [ngModel]="filters().sort" (ngModelChange)="setSort($event)">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name A–Z</option>
+        </select>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn" [class.active]="!isListMode" (click)="toggleView(false)" aria-label="Grid view">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="0" y="0" width="7" height="7"/><rect x="9" y="0" width="7" height="7"/>
+            <rect x="0" y="9" width="7" height="7"/><rect x="9" y="9" width="7" height="7"/>
+          </svg>
+        </button>
+        <button class="view-btn" [class.active]="isListMode" (click)="toggleView(true)" aria-label="List view">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="0" y="0" width="16" height="3"/><rect x="0" y="6" width="16" height="3"/><rect x="0" y="12" width="16" height="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ PRODUCT GRID ░░ -->
+<section class="products-section">
+  <div class="container">
+    <div class="products-grid" [class.list-mode]="isListMode">
+      <app-product-card
+        *ngFor="let p of filteredProducts(); trackBy: trackById"
+        [product]="p"
+        (quickView)="openModal($event)"
+        (addedToWishlist)="showToast('Added to wishlist ♥')">
+      </app-product-card>
+    </div>
+    <div class="no-results" *ngIf="filteredProducts().length === 0">
+      <p>No products match your filters. <button (click)="resetFilters()">Clear all filters</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ TRUST STRIP ░░ -->
+<section class="trust-strip">
+  <div class="container trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">◈</div>
+      <h3>Ethically Sourced</h3>
+      <p>Every diamond and gemstone is responsibly sourced and certified conflict-free.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">♻</div>
+      <h3>Recycled Precious Metals</h3>
+      <p>All our gold and platinum is recycled, reducing environmental impact.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">✦</div>
+      <h3>Handcrafted Artisanship</h3>
+      <p>Each ring is hand-finished by master jewellers with decades of expertise.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">↩</div>
+      <h3>30-Day Returns</h3>
+      <p>Free returns and resizing on all collections, always.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FAQ ░░ -->
+<section class="faq-section">
+  <div class="container faq-inner">
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let item of faqItems(); let i = index" [class.open]="openFaq === i">
+        <button class="faq-q" (click)="toggleFaq(i)">
+          {{ item.q }}
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-a"><p>{{ item.a }}</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ REVIEWS ░░ -->
+<section class="reviews-section">
+  <div class="container">
+    <h2 class="section-title" style="color: var(--champagne)">What Our Clients <em>Say</em></h2>
+    <div class="reviews-grid">
+      <div class="review-card" *ngFor="let r of reviews" [class.featured-review]="r.featured">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">{{ r.text }}</p>
+        <p class="review-author">— {{ r.author }}, {{ r.date }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ NEWSLETTER ░░ -->
+<section class="newsletter-section">
+  <div class="container newsletter-inner">
+    <div class="nl-text">
+      <h2>Join the Evokah Circle</h2>
+      <p>Be the first to discover new collections, exclusive offers, and artisan stories.</p>
+    </div>
+    <form class="nl-form" (ngSubmit)="onNewsletterSubmit()">
+      <input type="email" placeholder="Your email address" class="nl-input" [(ngModel)]="nlEmail" name="email" required />
+      <button type="submit" class="btn btn-nl">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ░░ MODAL ░░ -->
+<app-product-modal
+  *ngIf="selectedProduct"
+  [product]="selectedProduct"
+  (closed)="closeModal()"
+  (toast)="showToast($event)">
+</app-product-modal>
+
+<!-- ░░ TOAST ░░ -->
+<div class="toast" [class.visible]="toastVisible">{{ toastMsg }}</div>

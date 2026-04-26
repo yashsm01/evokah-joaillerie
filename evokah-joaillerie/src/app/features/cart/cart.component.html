@@ -1,0 +1,97 @@
+<section class="cart-page">
+  <div class="container">
+
+    <!-- ── Header ── -->
+    <div class="cart-header">
+      <a routerLink="/" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Continue Shopping
+      </a>
+      <div class="cart-title-block">
+        <p class="page-eyebrow">Your Selection</p>
+        <h1 class="page-title">Shopping <em>Cart</em></h1>
+      </div>
+    </div>
+
+    <!-- ── Empty State ── -->
+    <div class="cart-empty" *ngIf="cart.items().length === 0">
+      <div class="empty-icon">◇</div>
+      <h2>Your cart is empty</h2>
+      <p>Discover our exquisite collection of engagement rings and wedding bands.</p>
+      <a routerLink="/engagement" class="btn btn-primary">Explore Engagement Rings</a>
+      <a routerLink="/wedding" class="btn btn-ghost">View Wedding Bands</a>
+    </div>
+
+    <!-- ── Cart Content ── -->
+    <div class="cart-layout" *ngIf="cart.items().length > 0">
+
+      <!-- ── Items List ── -->
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cart.items()">
+          <div class="item-img">
+            <img [src]="item.img" [alt]="item.name"
+                 (error)="$any($event.target).src='https://placehold.co/200x200/2E001A/D4AF37?text=Ring'" />
+          </div>
+          <div class="item-info">
+            <p class="item-category">{{ item.category }}</p>
+            <h3 class="item-name">{{ item.name }}</h3>
+            <p class="item-metal">{{ item.metal }}</p>
+            <div class="item-qty">
+              <button class="qty-btn" (click)="cart.updateQty(item.id, item.metal, -1)" aria-label="Decrease">−</button>
+              <span class="qty-value">{{ item.qty }}</span>
+              <button class="qty-btn" (click)="cart.updateQty(item.id, item.metal, 1)" aria-label="Increase">+</button>
+            </div>
+          </div>
+          <div class="item-right">
+            <p class="item-price">{{ cart.formatPrice(item.price * item.qty) }}</p>
+            <p class="item-unit">{{ cart.formatPrice(item.price) }} each</p>
+            <button class="item-remove" (click)="cart.removeItem(item.id, item.metal)" aria-label="Remove item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Order Summary ── -->
+      <aside class="cart-summary">
+        <h2 class="summary-title">Order Summary</h2>
+
+        <div class="summary-rows">
+          <div class="summary-row" *ngFor="let item of cart.items()">
+            <span class="summary-item-name">{{ item.name.split(' ').slice(0,3).join(' ') }}…</span>
+            <span>{{ cart.formatPrice(item.price * item.qty) }}</span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-subtotal">
+          <span>Subtotal</span>
+          <span>{{ cart.formatPrice(cart.total()) }}</span>
+        </div>
+        <div class="summary-note">Taxes and shipping calculated at checkout.</div>
+
+        <button class="btn btn-primary btn-full" type="button">
+          Proceed to Checkout
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-left:8px">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <div class="summary-trust">
+          <span>◈ Ethically Sourced</span>
+          <span>♻ Recycled Gold</span>
+          <span>↩ Free Returns</span>
+        </div>
+
+        <button class="clear-cart" (click)="cart.clear()">Clear cart</button>
+      </aside>
+    </div>
+
+  </div>
+</section>

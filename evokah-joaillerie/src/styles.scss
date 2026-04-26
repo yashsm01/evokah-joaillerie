@@ -1,0 +1,292 @@
+/* ── GOOGLE FONTS ───────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ══════════════════════════════════════════════════════════════
+   THEME: DARK — "Ruby Opulence"
+   Deep crimson + ivory cream + liquid gold
+   Applied when <body data-theme="dark">
+══════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="dark"] {
+
+  /* ── Core Palette ── */
+  --ruby:           #C41230;
+  --ruby-bright:    #E8193C;
+  --ruby-dark:      #8B0000;
+  --ruby-glow:      rgba(196,18,48,.35);
+  --gold:           #D4AF37;
+  --gold-light:     #F0D060;
+  --gold-dim:       rgba(212,175,55,.20);
+  --cream:          #FFF8EE;
+  --warm-gray:      #C8A8A0;
+
+  /* ── Surfaces ── */
+  --bg-page:        #1A0008;
+  --bg-card:        #240010;
+  --bg-card-hover:  #2E001A;
+  --bg-overlay:     rgba(26,0,8,.97);
+  --bg-hero:        #0E0005;
+  --bg-header:      rgba(14,0,5,.93);
+  --bg-footer:      #0A0003;
+  --bg-trust:       #1F000D;
+  --bg-nl:          #0E0005;
+  --bg-faq:         #160006;
+  --bg-toolbar:     #1F000D;
+  --bg-modal:       #240010;
+  --bg-pill:        #2E001A;
+  --bg-pill-active: #C41230;
+  --champagne:      #2E001A;  /* card image bg */
+
+  /* ── Text ── */
+  --text-primary:   #FFF8EE;
+  --text-secondary: #F0D8CC;
+  --text-muted:     #C8A8A0;
+  --text-hero-title:#FFF8EE;
+  --text-hero-desc: #F0D8CC;
+  --text-price:     #D4AF37;
+  --text-tag:       #FFF8EE;
+
+  /* ── Accents ── */
+  --accent:         #C41230;
+  --accent-hover:   #E8193C;
+  --accent-text:    #FFF8EE;
+
+  /* ── Borders ── */
+  --border:         rgba(212,175,55,.14);
+  --border-card:    rgba(212,175,55,.10);
+  --border-hover:   rgba(212,175,55,.45);
+
+  /* ── Buttons ── */
+  --btn-primary-bg:   #C41230;
+  --btn-primary-txt:  #FFF8EE;
+  --btn-ghost-bg:     transparent;
+  --btn-ghost-txt:    #D4AF37;
+  --btn-ghost-brd:    rgba(212,175,55,.50);
+
+  /* ── Badges / Stars ── */
+  --star-color:     #D4AF37;
+  --badge-bg:       #D4AF37;
+  --badge-txt:      #1A0008;
+
+  /* ── Typography ── */
+  --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+
+  /* ── Shadows / Effects ── */
+  --shadow:         0 4px 32px rgba(139,0,0,.45);
+  --shadow-lg:      0 20px 60px rgba(139,0,0,.55), 0 0 0 1px rgba(212,175,55,.08);
+  --shadow-card:    0 4px 24px rgba(139,0,0,.40);
+  --shadow-gold:    0 0 30px rgba(212,175,55,.15);
+  --transition:     .3s cubic-bezier(.4,0,.2,1);
+  --radius-card:    0px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   THEME: LIGHT — "Pearl & Gold"
+   Warm ivory pearl + deep obsidian + liquid champagne gold
+   Applied when <body data-theme="light">
+══════════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+
+  /* ── Core Palette ── */
+  --ruby:           #6B0F1A;
+  --ruby-bright:    #9A1428;
+  --ruby-dark:      #4a0a12;
+  --ruby-glow:      rgba(107,15,26,.10);
+  --gold:           #B8922A;
+  --gold-light:     #D4AF37;
+  --gold-dim:       rgba(184,146,42,.12);
+  --cream:          #1a1208;
+  --warm-gray:      #8a7a6a;
+
+  /* ── Surfaces ── */
+  --bg-page:        #FDFAF5;
+  --bg-card:        #FFFFFF;
+  --bg-card-hover:  #FEFCF8;
+  --bg-overlay:     rgba(253,250,245,.98);
+  --bg-hero:        #F5EFE4;
+  --bg-header:      rgba(255,255,255,.95);
+  --bg-footer:      #0D0B08;
+  --bg-trust:       #F5EFE4;
+  --bg-nl:          #0D0B08;
+  --bg-faq:         #FDFAF5;
+  --bg-toolbar:     #F5EFE4;
+  --bg-modal:       #FFFFFF;
+  --bg-pill:        #EDE8DF;
+  --bg-pill-active: #0D0B08;
+  --champagne:      #F0E8D8;  /* card image bg */
+
+  /* ── Text ── */
+  --text-primary:   #0D0B08;
+  --text-secondary: #3D3020;
+  --text-muted:     #8a7a6a;
+  --text-hero-title:#0D0B08;
+  --text-hero-desc: #3D3020;
+  --text-price:     #6B0F1A;
+  --text-tag:       #FFFFFF;
+
+  /* ── Accents ── */
+  --accent:         #0D0B08;
+  --accent-hover:   #3D3020;
+  --accent-text:    #FDFAF5;
+
+  /* ── Borders ── */
+  --border:         rgba(13,11,8,.10);
+  --border-card:    rgba(184,146,42,.15);
+  --border-hover:   rgba(184,146,42,.45);
+
+  /* ── Buttons ── */
+  --btn-primary-bg:   #0D0B08;
+  --btn-primary-txt:  #FDFAF5;
+  --btn-ghost-bg:     transparent;
+  --btn-ghost-txt:    #6B0F1A;
+  --btn-ghost-brd:    rgba(107,15,26,.4);
+
+  /* ── Badges / Stars ── */
+  --star-color:     #B8922A;
+  --badge-bg:       #6B0F1A;
+  --badge-txt:      #FFFFFF;
+
+  /* ── Typography ── */
+  --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+
+  /* ── Shadows / Effects ── */
+  --shadow:         0 4px 24px rgba(13,11,8,.10);
+  --shadow-lg:      0 20px 50px rgba(13,11,8,.14), 0 0 0 1px rgba(184,146,42,.10);
+  --shadow-card:    0 4px 20px rgba(13,11,8,.08);
+  --shadow-gold:    0 0 30px rgba(184,146,42,.10);
+  --transition:     .3s cubic-bezier(.4,0,.2,1);
+  --radius-card:    0px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THEME: WARM — "Linen & Espresso"
+   Warm linen cream • sand taupe • deep espresso • antique copper
+   Applied when <body data-theme="warm">
+
+   Palette:
+     #edede9  Soft warm neutral — page background, headers
+     #d6ccc2  Warm taupe        — card surfaces, image panels
+     #f5ebe0  Warm cream linen  — hero, FAQ, featured sections
+     #e3d5ca  Warm sand         — toolbar, trust strip, pills
+     #d5bdaf  Dusty rose taupe  — borders, dividers, muted fills
+══════════════════════════════════════════════════════════════ */
+[data-theme="warm"] {
+
+  /* ── Brand tones (from your palette) ── */
+  --linen-1:        #edede9;   /* lightest — neutral warmth */
+  --linen-2:        #d6ccc2;   /* warm taupe */
+  --linen-3:        #f5ebe0;   /* warmest cream */
+  --linen-4:        #e3d5ca;   /* warm sand */
+  --linen-5:        #d5bdaf;   /* dusty rose taupe */
+
+  /* ── Core Palette ── */
+  --ruby:           #7c3b2e;   /* burnt sienna — warm ruby substitute */
+  --ruby-bright:    #a04535;   /* copper red hover */
+  --ruby-dark:      #5a2820;   /* deep espresso red */
+  --ruby-glow:      rgba(124,59,46,.15);
+  --gold:           #b8813a;   /* antique copper-gold */
+  --gold-light:     #d4a862;   /* warm honey */
+  --gold-dim:       rgba(184,129,58,.14);
+  --cream:          #2c1e14;   /* deep espresso — used on dark surfaces */
+  --warm-gray:      #9a8070;
+
+  /* ── Surfaces — entirely from the user palette ── */
+  --bg-page:        #edede9;   /* palette 1 */
+  --bg-card:        #f5ebe0;   /* palette 3 — warmest card surface */
+  --bg-card-hover:  #ede0d3;
+  --bg-overlay:     rgba(237,237,233,.97);
+  --bg-hero:        #f5ebe0;   /* palette 3 — linen hero */
+  --bg-header:      rgba(237,237,233,.94);
+  --bg-footer:      #2c1e14;   /* deep espresso contrast footer */
+  --bg-trust:       #e3d5ca;   /* palette 4 */
+  --bg-nl:          #2c1e14;   /* espresso newsletter */
+  --bg-faq:         #edede9;   /* palette 1 */
+  --bg-toolbar:     #e3d5ca;   /* palette 4 */
+  --bg-modal:       #f5ebe0;   /* palette 3 */
+  --bg-pill:        #d5bdaf;   /* palette 5 */
+  --bg-pill-active: #5a2820;   /* espresso active */
+  --champagne:      #e3d5ca;   /* palette 4 — card image panel */
+
+  /* ── Text ── */
+  --text-primary:   #1e1008;   /* deep warm espresso */
+  --text-secondary: #4a3428;   /* medium warm brown */
+  --text-muted:     #8a7060;   /* taupe muted */
+  --text-hero-title:#1e1008;
+  --text-hero-desc: #4a3428;
+  --text-price:     #7c3b2e;   /* burnt sienna price */
+  --text-tag:       #f5ebe0;   /* cream on dark badge */
+
+  /* ── Accents ── */
+  --accent:         #5a2820;   /* deep espresso — primary CTA */
+  --accent-hover:   #7c3b2e;   /* burnt sienna hover */
+  --accent-text:    #f5ebe0;   /* cream text on accent */
+
+  /* ── Borders (palette 5 based) ── */
+  --border:         rgba(213,189,175,.60);   /* palette 5 transparent */
+  --border-card:    rgba(213,189,175,.50);
+  --border-hover:   rgba(184,129,58,.55);    /* copper hover border */
+
+  /* ── Buttons ── */
+  --btn-primary-bg:   #5a2820;
+  --btn-primary-txt:  #f5ebe0;
+  --btn-ghost-bg:     transparent;
+  --btn-ghost-txt:    #7c3b2e;
+  --btn-ghost-brd:    rgba(124,59,46,.40);
+
+  /* ── Badges / Stars ── */
+  --star-color:     #b8813a;   /* antique copper */
+  --badge-bg:       #5a2820;   /* espresso badge */
+  --badge-txt:      #f5ebe0;
+
+  /* ── Typography ── */
+  --font-serif:     'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+
+  /* ── Shadows — warm tinted ── */
+  --shadow:         0 4px 24px rgba(30,16,8,.10);
+  --shadow-lg:      0 20px 50px rgba(30,16,8,.14), 0 0 0 1px rgba(213,189,175,.40);
+  --shadow-card:    0 4px 16px rgba(30,16,8,.08);
+  --shadow-gold:    0 0 28px rgba(184,129,58,.12);
+  --transition:     .3s cubic-bezier(.4,0,.2,1);
+  --radius-card:    0px;
+}
+
+/* ── RESET ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── UTILS ──────────────────────────────────────── */
+.container { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+}
+
+/* ── GOLD SHIMMER ANIMATION ─────────────────────── */
+@keyframes goldShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-text {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, var(--gold) 60%, var(--gold-light) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s linear infinite;
+}

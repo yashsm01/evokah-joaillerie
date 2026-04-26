@@ -1,0 +1,65 @@
+<div class="modal-overlay" (click)="closed.emit()" *ngIf="product">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closed.emit()">✕</button>
+    <div class="modal-body">
+
+      <!-- ── Image (switches with metal) ── -->
+      <div class="modal-img">
+        <img [src]="activeImage()" [alt]="product.name"
+             (error)="$any($event.target).src='https://placehold.co/500x500/2E001A/D4AF37?text=Ring'"
+             class="modal-product-img" />
+        <span class="modal-badge" *ngIf="product.tag">{{ product.tag }}</span>
+      </div>
+
+      <!-- ── Info ── -->
+      <div class="modal-info">
+        <p class="modal-category">{{ product.category }}</p>
+        <h2 class="modal-name">{{ product.name }}</h2>
+        <p class="modal-price">From <strong>{{ formatPrice(product.basePrice) }}</strong></p>
+        <p class="modal-desc" *ngIf="product.description">{{ product.description }}</p>
+
+        <!-- ── Metal selector (changes image) ── -->
+        <div class="modal-swatches">
+          <label>Metal</label>
+          <div class="modal-swatch-row">
+            <button *ngFor="let m of product.metals"
+                    class="modal-swatch {{ m }}"
+                    [class.active]="selectedMetal() === m"
+                    [title]="metalLabels[m]"
+                    (click)="selectMetal(m)"
+                    type="button">
+            </button>
+          </div>
+          <p class="swatch-label" *ngIf="selectedMetal()">{{ metalLabels[selectedMetal()!] }}</p>
+        </div>
+
+        <!-- ── Stone shape selector ── -->
+        <div class="modal-shapes" *ngIf="product.shapes.length > 1">
+          <label>Stone Shape / Finish</label>
+          <div class="shapes-row">
+            <button *ngFor="let s of product.shapes"
+                    class="shape-chip"
+                    [class.active]="selectedShape() === s"
+                    (click)="selectShape(s)"
+                    type="button">
+              {{ s }}
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Actions ── -->
+        <div class="modal-actions">
+          <button class="btn btn-primary" (click)="addToCart()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right:8px">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            Add to Cart
+          </button>
+          <button class="btn btn-outline" (click)="goToCart()">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

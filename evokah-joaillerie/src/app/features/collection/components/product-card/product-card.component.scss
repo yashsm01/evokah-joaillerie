@@ -1,0 +1,202 @@
+/* ── HOST: fill the grid cell completely ─────────── */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── CARD WRAPPER ───────────────────────────────── */
+.product-card {
+  background: var(--bg-card);
+  position: relative;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: 1px solid var(--border-card);
+
+  /* Stretch card to fill the host which fills the grid cell */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &:hover {
+    z-index: 2;
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg);
+
+    .card-image-wrap img { transform: scale(1.05); }
+    .card-wishlist { opacity: 1; transform: translateY(0); }
+    .card-swatches { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ── Image ── */
+.card-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--champagne);
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;  /* never compress the image */
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 24px;
+    transition: transform .7s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+/* ── Badge ── */
+.card-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: var(--badge-bg);
+  color: var(--badge-txt);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  z-index: 1;
+}
+
+/* ── Wishlist ── */
+.card-wishlist {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 34px; height: 34px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--transition);
+  opacity: 0;
+  transform: translateY(-6px);
+  cursor: pointer;
+  z-index: 1;
+  svg { width: 14px; height: 14px; }
+  &:hover { color: var(--ruby-bright, #E8193C); border-color: var(--ruby-bright, #E8193C); }
+}
+
+/* ── Metal swatches ── */
+.card-swatches {
+  position: absolute;
+  bottom: 14px; left: 14px;
+  display: flex; gap: 5px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all var(--transition);
+  z-index: 1;
+}
+.swatch {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--bg-card);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.2);
+  cursor: pointer;
+  transition: transform var(--transition);
+  &:hover { transform: scale(1.3); }
+  &.yellow-gold  { background: linear-gradient(135deg, #c8900a, #f0c040); }
+  &.white-gold   { background: linear-gradient(135deg, #c8c8cc, #eeeef0); }
+  &.rose-gold    { background: linear-gradient(135deg, #c07060, #e8a898); }
+  &.platinum     { background: linear-gradient(135deg, #888894, #b8b8c4); }
+}
+
+/* ── Card body — grows to fill remaining height ── */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 24px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-card);
+  min-height: 0; /* important: prevents flex overflow */
+}
+
+.card-category {
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+  opacity: .75;
+  flex-shrink: 0;
+}
+
+.card-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+  letter-spacing: .01em;
+  flex-shrink: 0;
+}
+
+.card-sub {
+  font-size: .66rem;
+  color: var(--text-muted);
+  letter-spacing: .06em;
+  flex-shrink: 0;
+}
+
+/* ── Spacer: pushes footer to bottom ── */
+.card-spacer {
+  flex: 1;
+  min-height: 12px; /* at least a little breathing room */
+}
+
+/* ── Card footer — always at the bottom ── */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-card);
+  flex-shrink: 0;
+}
+
+.card-price {
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--text-price);
+  letter-spacing: .03em;
+  white-space: nowrap;
+
+  span {
+    font-size: .62rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-right: 2px;
+    letter-spacing: .06em;
+    display: block;
+    margin-bottom: 1px;
+  }
+}
+
+.card-cta {
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  padding: 8px 14px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  cursor: pointer;
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--accent);
+    color: var(--accent-text);
+    box-shadow: 0 4px 20px var(--ruby-glow);
+    letter-spacing: .18em;
+  }
+}

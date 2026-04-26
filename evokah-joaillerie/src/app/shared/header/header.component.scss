@@ -1,0 +1,176 @@
+.announcement-bar {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: .65rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 11px 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+
+  /* Gold shimmer line at bottom */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: .5;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: var(--bg-header);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition);
+
+  &.scrolled {
+    box-shadow: var(--shadow), 0 1px 0 var(--gold-dim);
+  }
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  padding: 0 36px;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex: 1;
+}
+.nav-right { justify-content: flex-end; }
+
+.nav-link {
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--transition);
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width var(--transition);
+  }
+
+  &:hover {
+    color: var(--text-primary);
+    &::after { width: 100%; }
+  }
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+
+  .logo-top {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: .42em;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  /* Gold shimmer on logo sub */
+  .logo-sub {
+    font-size: .48rem;
+    letter-spacing: .55em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 3px;
+    opacity: .75;
+  }
+
+  &:hover .logo-top { opacity: .8; }
+}
+
+.header-icons { display: flex; align-items: center; gap: 2px; }
+
+.icon-btn {
+  padding: 9px;
+  color: var(--text-muted);
+  transition: color var(--transition);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+
+  &:hover { color: var(--gold); }
+}
+
+.cart-badge {
+  position: absolute;
+  top: 2px; right: 2px;
+  background: var(--gold);
+  color: var(--bg-page);
+  font-size: .55rem;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-sans);
+}
+
+.search-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  &.open { display: flex; }
+}
+
+.search-input {
+  width: 640px;
+  max-width: 88vw;
+  border: none;
+  border-bottom: 1px solid var(--gold);
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  padding: 14px 0;
+  outline: none;
+  color: var(--text-primary);
+  letter-spacing: .03em;
+  &::placeholder { color: var(--text-muted); font-style: italic; }
+}
+
+.search-close {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition);
+  &:hover { color: var(--gold); }
+}

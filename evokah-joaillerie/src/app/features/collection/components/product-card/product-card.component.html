@@ -1,0 +1,26 @@
+<div class="product-card" (click)="quickView.emit(product)" tabindex="0" role="button" [attr.aria-label]="product.name">
+  <div class="card-image-wrap">
+    <span class="card-badge" *ngIf="product.tag">{{ product.tag }}</span>
+    <button class="card-wishlist" (click)="onWishlist($event)" aria-label="Add to wishlist">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+    <img [src]="product.img" [alt]="product.name" loading="lazy"
+         (error)="$any($event.target).src='https://placehold.co/400x400/F7E7CE/A9A9A9?text=Ring'" />
+    <div class="card-swatches">
+      <span *ngFor="let m of product.metals" class="swatch {{ m }}" [title]="metalLabels[m]"></span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <p class="card-category">{{ product.category }}</p>
+    <h3 class="card-name">{{ product.name }}</h3>
+    <p class="card-sub">{{ product.shapes.join(' · ') }}</p>
+    <div class="card-spacer"></div>
+    <div class="card-footer">
+      <p class="card-price"><span>From</span>{{ formatPrice(product.basePrice) }}</p>
+      <button class="card-cta" (click)="onQuickView($event)">Quick View</button>
+    </div>
+  </div>
+</div>
