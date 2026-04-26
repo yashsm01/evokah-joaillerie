@@ -1,8 +1,10 @@
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, signal, computed } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { ThemeService, ThemeName, VALID_THEMES } from '../../core/services/theme.service';
 import { LangService } from '../../core/services/lang.service';
+import { ProductService } from '../../core/services/product.service';
+import { Product } from '../../core/models/product.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,13 +12,32 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   cart     = inject(CartService);
   themeSvc = inject(ThemeService);
   langSvc  = inject(LangService);
+  private prodSvc = inject(ProductService);
   private router = inject(Router);
+
+  allProducts = signal<Product[]>([]);
+
+  engagementBestSellers = computed(() =>
+    this.allProducts()
+      .filter(p => p.collection === 'engagement' && (p.tag === 'Bestseller' || p.tag === 'Popular'))
+      .slice(0, 2)
+  );
+
+  weddingBestSellers = computed(() =>
+    this.allProducts()
+      .filter(p => p.collection === 'wedding' && (p.tag === 'Bestseller' || p.tag === 'Luxury'))
+      .slice(0, 2)
+  );
+
+  constructor() {
+    this.prodSvc.getProducts().subscribe(p => this.allProducts.set(p));
+  }
 
   searchOpen    = false;
   scrolled      = false;

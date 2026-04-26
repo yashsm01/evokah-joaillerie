@@ -13,8 +13,10 @@
     <p class="hero-eyebrow">The Evokah Collection</p>
     <h1 class="hero-title" *ngIf="collectionType() === 'engagement'">Engagement<br /><em>Rings</em></h1>
     <h1 class="hero-title" *ngIf="collectionType() === 'wedding'">Wedding<br /><em>Bands</em></h1>
+    <h1 class="hero-title" *ngIf="collectionType() === 'all'">Fine<br /><em>Jewellery</em></h1>
     <p class="hero-desc" *ngIf="collectionType() === 'engagement'">Conceived as personal signatures — emotion shaped through intention, proportion, and ethical artisanship.</p>
     <p class="hero-desc" *ngIf="collectionType() === 'wedding'">Symbolize your forever with handcrafted bands designed for comfort, durability, and timeless elegance.</p>
+    <p class="hero-desc" *ngIf="collectionType() === 'all'">Explore our complete collection of handcrafted rings, necklaces, and earrings, designed for the modern connoisseur.</p>
     <div class="hero-ctas">
       <a href="#collection" class="btn btn-primary">Shop the Collection</a>
       <a href="#consult" class="btn btn-ghost">Book a Consultation</a>
@@ -51,6 +53,16 @@
   <div class="container toolbar-inner">
     <p class="result-count">Showing <strong>{{ filteredProducts().length }}</strong> product{{ filteredProducts().length !== 1 ? 's' : '' }}</p>
     <div class="toolbar-right">
+      <div class="filter-group">
+        <label>Type</label>
+        <select [ngModel]="filters().type" (ngModelChange)="setType($event)">
+          <option value="all">All Items</option>
+          <option value="ring">Rings</option>
+          <option value="necklace">Necklaces</option>
+          <option value="earring">Earrings</option>
+          <option value="bracelet">Bracelets</option>
+        </select>
+      </div>
       <div class="filter-group">
         <label>Metal</label>
         <select [ngModel]="filters().metal" (ngModelChange)="setMetal($event)">
@@ -105,7 +117,7 @@
         *ngFor="let p of filteredProducts(); trackBy: trackById"
         [product]="p"
         (quickView)="openModal($event)"
-        (addedToWishlist)="showToast('Added to wishlist ♥')">
+        (addedToWishlist)="addToWishlist($event)">
       </app-product-card>
     </div>
     <div class="no-results" *ngIf="filteredProducts().length === 0">

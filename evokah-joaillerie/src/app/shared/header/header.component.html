@@ -1,52 +1,165 @@
-<!-- ── ANNOUNCEMENT BAR ──────────────────────────────────── -->
-<div class="announcement-bar">
-  <p>{{ langSvc.t().announcement }}</p>
-</div>
-
-<!-- ── MAIN HEADER ───────────────────────────────────────── -->
 <header class="header" [class.scrolled]="scrolled">
-  <div class="header-inner">
+  <!-- ── ANNOUNCEMENT BAR ─────────────────────────────────── -->
+  <div class="announcement-bar">
+    {{ langSvc.t().header_announcement }}
+  </div>
 
+  <div class="header-inner">
     <!-- Desktop left nav -->
     <nav class="nav-left" aria-label="Main navigation left">
-      <a routerLink="/" class="nav-link">{{ langSvc.t().nav_collections }}</a>
-      <a routerLink="/engagement" class="nav-link">{{ langSvc.t().nav_engagement }}</a>
-      <a routerLink="/wedding" class="nav-link">{{ langSvc.t().nav_wedding }}</a>
+      <div class="nav-item-dropdown">
+        <a routerLink="/shop" class="nav-link">Shop</a>
+        <div class="nav-dropdown">
+          <a [routerLink]="['/shop']" [queryParams]="{type: 'ring'}" class="drop-link">Rings</a>
+          <a [routerLink]="['/shop']" [queryParams]="{type: 'necklace'}" class="drop-link">Necklaces</a>
+          <a [routerLink]="['/shop']" [queryParams]="{type: 'earring'}" class="drop-link">Earrings</a>
+          <a [routerLink]="['/shop']" [queryParams]="{type: 'bracelet'}" class="drop-link">Bracelets</a>
+        </div>
+      </div>
+
+      <!-- ENGAGEMENT MEGA MENU -->
+      <div class="nav-item-dropdown mega-trigger">
+        <a routerLink="/engagement" class="nav-link">{{ langSvc.t().nav_engagement }}</a>
+        <div class="mega-menu">
+          <div class="container mega-inner">
+            <div class="mega-cols">
+              <div class="mega-col">
+                <h3>Shop by Collection</h3>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'knot'}">Secret Heart®</a>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'halo'}">Love Knot®</a>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'blossom'}">Blossom</a>
+                <a routerLink="/engagement">Shop All Collections</a>
+              </div>
+              <div class="mega-col">
+                <h3>Shop By Style</h3>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'solitaire'}">Solitaire</a>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'pave'}">Pavé</a>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'halo'}">Halo</a>
+                <a routerLink="/engagement">Three-Stone</a>
+                <a routerLink="/engagement">Two-Stone</a>
+                <a [routerLink]="['/engagement']" [queryParams]="{style: 'cluster'}">Cluster</a>
+                <a routerLink="/engagement">Non-Traditional</a>
+                <a routerLink="/engagement">Men's Engagement Rings</a>
+                <a routerLink="/engagement" class="gold-link">Build Your Own Ring</a>
+                <a routerLink="/engagement" class="all-link">All Engagement Rings</a>
+              </div>
+              <div class="mega-col">
+                <h3>Shop By Shape</h3>
+                <a routerLink="/engagement">Round</a>
+                <a routerLink="/engagement">Oval</a>
+                <a routerLink="/engagement">Emerald</a>
+                <a routerLink="/engagement">Princess</a>
+                <a routerLink="/engagement">Cushion</a>
+                <a routerLink="/engagement">Pear</a>
+                <a routerLink="/engagement">Radiant</a>
+                <a routerLink="/engagement">Heart</a>
+                <a routerLink="/engagement">Marquise</a>
+                <a routerLink="/engagement">Asscher</a>
+                <a routerLink="/engagement" class="gold-link">Build Your Own Ring</a>
+              </div>
+              <div class="mega-col">
+                <h3>Shop By Stone</h3>
+                <a routerLink="/engagement">Diamonds</a>
+                <a routerLink="/engagement">Gemstones</a>
+                <a routerLink="/engagement">Emeralds</a>
+                <a routerLink="/engagement">Sapphires</a>
+                <a routerLink="/engagement" class="gold-link">Build Your Own Ring</a>
+                <a routerLink="/engagement" class="all-link">All Engagement Rings</a>
+              </div>
+            </div>
+            <div class="mega-featured">
+              <p class="featured-label">Curated <em>Bestsellers</em></p>
+              <div class="featured-grid">
+                <div class="feat-card" *ngFor="let p of engagementBestSellers()" [routerLink]="['/shop']" [queryParams]="{id: p.id}">
+                  <div class="feat-img">
+                    <img [src]="p.img" [alt]="p.name" />
+                    <span class="feat-badge">Featured</span>
+                  </div>
+                  <div class="feat-info">
+                    <p class="feat-name">{{ p.name }}</p>
+                    <p class="feat-price">${{ p.basePrice.toLocaleString() }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEDDING MEGA MENU -->
+      <div class="nav-item-dropdown mega-trigger">
+        <a routerLink="/wedding" class="nav-link">{{ langSvc.t().nav_wedding }}</a>
+        <div class="mega-menu">
+          <div class="container mega-inner">
+            <div class="mega-cols">
+              <div class="mega-col">
+                <h3>Shop for Her</h3>
+                <a routerLink="/wedding">Diamond Bands</a>
+                <a routerLink="/wedding">Plain Gold Bands</a>
+                <a routerLink="/wedding">Eternity Bands</a>
+                <a routerLink="/wedding">Contour Bands</a>
+                <a routerLink="/wedding" class="all-link">All Women's Bands</a>
+              </div>
+              <div class="mega-col">
+                <h3>Shop for Him</h3>
+                <a routerLink="/wedding">Classic Men's Bands</a>
+                <a routerLink="/wedding">Diamond Men's Bands</a>
+                <a routerLink="/wedding">Patterned Bands</a>
+                <a routerLink="/wedding" class="all-link">All Men's Bands</a>
+              </div>
+              <div class="mega-col">
+                <h3>Matched Sets</h3>
+                <a routerLink="/wedding">His & Hers Sets</a>
+                <a routerLink="/wedding">Bridal Sets</a>
+                <a routerLink="/wedding">Anniversary Gifts</a>
+              </div>
+              <div class="mega-col">
+                <h3>Metal Guide</h3>
+                <a routerLink="/wedding">18k Yellow Gold</a>
+                <a routerLink="/wedding">18k White Gold</a>
+                <a routerLink="/wedding">18k Rose Gold</a>
+                <a routerLink="/wedding">Platinum</a>
+              </div>
+            </div>
+            <div class="mega-featured">
+              <p class="featured-label">Wedding <em>Essentials</em></p>
+              <div class="featured-grid">
+                <div class="feat-card" *ngFor="let p of weddingBestSellers()" [routerLink]="['/shop']" [queryParams]="{id: p.id}">
+                  <div class="feat-img">
+                    <img [src]="p.img" [alt]="p.name" />
+                    <span class="feat-badge">Bestseller</span>
+                  </div>
+                  <div class="feat-info">
+                    <p class="feat-name">{{ p.name }}</p>
+                    <p class="feat-price">${{ p.basePrice.toLocaleString() }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    <!-- Logo -->
-    <a routerLink="/" class="logo" aria-label="Evokah Joaillerie — Home">
+    <!-- LOGO -->
+    <a routerLink="/" class="logo" aria-label="Evokah Joaillerie Home">
       <span class="logo-top">EVOKAH</span>
       <span class="logo-sub">JOAILLERIE</span>
     </a>
 
     <!-- Desktop right nav -->
-    <nav class="nav-right" aria-label="Main navigation right">
-      <a routerLink="/story" class="nav-link">{{ langSvc.t().nav_story }}</a>
-      <a routerLink="/atelier" class="nav-link">{{ langSvc.t().nav_atelier }}</a>
-
+    <div class="nav-right">
       <div class="header-icons">
-
-        <!-- Language toggle EN/FR -->
-        <button class="lang-btn icon-btn" (click)="switchLang()"
-                [title]="langSvc.lang() === 'en' ? 'Passer en Français' : 'Switch to English'"
-                aria-label="Toggle language">
+        <!-- Language toggle -->
+        <button class="icon-btn lang-btn" (click)="switchLang()" aria-label="Toggle language">
           <span class="lang-label">{{ langSvc.lang() === 'en' ? 'FR' : 'EN' }}</span>
         </button>
 
-        <!-- Theme switcher -->
-        <div class="theme-switcher" [class.open]="themeMenuOpen">
-          <button class="icon-btn theme-btn"
-                  (click)="toggleThemeMenu()"
-                  [title]="'Palette: ' + themeSvc.current()"
-                  aria-label="Switch theme">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="8"  cy="10" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="12" cy="7"  r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="16" cy="10" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="14" cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="9"  cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+          <button class="icon-btn theme-btn" (click)="toggleThemeMenu()" aria-label="Change theme">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
             </svg>
           </button>
           <div class="theme-menu" *ngIf="themeMenuOpen">
@@ -71,7 +184,7 @@
         </button>
 
         <!-- Wishlist -->
-        <button class="icon-btn" aria-label="Wishlist">
+        <button class="icon-btn" routerLink="/wishlist" aria-label="Wishlist">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
@@ -88,31 +201,7 @@
         </button>
 
       </div>
-    </nav>
-
-    <!-- ── MOBILE RIGHT: cart + hamburger ── -->
-    <div class="mobile-actions">
-      <button class="icon-btn lang-btn" (click)="switchLang()" aria-label="Toggle language">
-        <span class="lang-label">{{ langSvc.lang() === 'en' ? 'FR' : 'EN' }}</span>
-      </button>
-      <button class="icon-btn cart-btn" routerLink="/cart" aria-label="Cart">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-        <span class="cart-badge" *ngIf="cart.count() > 0">{{ cart.count() }}</span>
-      </button>
-      <button class="hamburger-btn icon-btn"
-              (click)="toggleMobileNav()"
-              [class.active]="mobileNavOpen"
-              aria-label="Toggle menu">
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-      </button>
     </div>
-
   </div>
 
   <!-- ── SEARCH OVERLAY ─────────────────────────────────── -->
@@ -124,14 +213,44 @@
   </div>
 </header>
 
+<!-- ── MOBILE ACTIONS ── -->
+<div class="mobile-actions">
+  <button class="icon-btn lang-btn" (click)="switchLang()" aria-label="Toggle language">
+    <span class="lang-label">{{ langSvc.lang() === 'en' ? 'FR' : 'EN' }}</span>
+  </button>
+  <button class="icon-btn cart-btn" routerLink="/cart" aria-label="Cart">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+    <span class="cart-badge" *ngIf="cart.count() > 0">{{ cart.count() }}</span>
+  </button>
+  <button class="hamburger-btn icon-btn"
+          (click)="toggleMobileNav()"
+          [class.active]="mobileNavOpen"
+          aria-label="Toggle menu">
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+  </button>
+</div>
+
 <!-- ── MOBILE NAV DRAWER ─────────────────────────────────── -->
 <nav class="mobile-nav" [class.open]="mobileNavOpen" aria-label="Mobile navigation">
   <div class="mobile-nav-inner">
-    <a routerLink="/" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_collections }}</a>
+    <a routerLink="/shop" class="mob-link" (click)="closeMobileNav()">Shop All</a>
+    <div class="mob-sub-links">
+      <a [routerLink]="['/shop']" [queryParams]="{type: 'ring'}" class="mob-sub-link" (click)="closeMobileNav()">Rings</a>
+      <a [routerLink]="['/shop']" [queryParams]="{type: 'necklace'}" class="mob-sub-link" (click)="closeMobileNav()">Necklaces</a>
+      <a [routerLink]="['/shop']" [queryParams]="{type: 'earring'}" class="mob-sub-link" (click)="closeMobileNav()">Earrings</a>
+      <a [routerLink]="['/shop']" [queryParams]="{type: 'bracelet'}" class="mob-sub-link" (click)="closeMobileNav()">Bracelets</a>
+    </div>
     <a routerLink="/engagement" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_engagement }}</a>
     <a routerLink="/wedding" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_wedding }}</a>
     <a routerLink="/story" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_story }}</a>
     <a routerLink="/atelier" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_atelier }}</a>
+    <a routerLink="/wishlist" class="mob-link" (click)="closeMobileNav()">Wishlist</a>
     <a routerLink="/cart" class="mob-link" (click)="closeMobileNav()">Cart</a>
 
     <div class="mob-divider"></div>
@@ -142,7 +261,8 @@
       <button *ngFor="let t of themes"
               class="mob-theme-btn"
               [class.active]="themeSvc.current() === t.key"
-              (click)="switchTheme(t.key)">
+              (click)="switchTheme(t.key)"
+              type="button">
         <span class="theme-dot" [style.background]="t.dot"></span>
         {{ t.label }}
       </button>
@@ -150,5 +270,4 @@
   </div>
 </nav>
 
-<!-- Mobile nav backdrop -->
 <div class="mobile-backdrop" [class.visible]="mobileNavOpen" (click)="closeMobileNav()"></div>

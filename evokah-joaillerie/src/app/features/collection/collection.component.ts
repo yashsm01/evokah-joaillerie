@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 import { Product, ProductFilters, ProductStyle, MetalType, PriceGroup, SortOption } from '../../core/models/product.model';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductModalComponent } from './components/product-modal/product-modal.component';
@@ -25,6 +26,15 @@ const WEDDING_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
   { label: 'Pavé',       value: 'pave' },
 ];
 
+const ALL_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
+  { label: 'All Styles', value: 'all' },
+  { label: 'Solitaire',  value: 'solitaire' },
+  { label: 'Halo',       value: 'halo' },
+  { label: 'Pendant',    value: 'pendant' },
+  { label: 'Studs',      value: 'stud' },
+  { label: 'Hoops',      value: 'hoop' },
+];
+
 @Component({
   selector: 'app-collection',
   standalone: true,
@@ -34,34 +44,45 @@ const WEDDING_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
 })
 export class CollectionComponent implements OnInit {
   private svc = inject(ProductService);
+  private wishSvc = inject(WishlistService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  collectionType = signal<'engagement' | 'wedding'>('engagement');
+  collectionType = signal<'engagement' | 'wedding' | 'all'>('engagement');
   allProducts: Product[] = [];
   selectedProduct: Product | null = null;
   isListMode = false;
   toastMsg = '';
   toastVisible = false;
 
-  stylePills = computed(() =>
-    this.collectionType() === 'engagement' ? ENGAGEMENT_STYLES : WEDDING_STYLES
-  );
+  stylePills = computed(() => {
+    const type = this.collectionType();
+    if (type === 'engagement') return ENGAGEMENT_STYLES;
+    if (type === 'wedding') return WEDDING_STYLES;
+    return ALL_STYLES;
+  });
 
   filters = signal<ProductFilters>({
     style: 'all',
     metal: 'all',
     priceGroup: 'all',
+    type: 'all',
     sort: 'featured',
   });
 
   filteredProducts = computed(() => {
     const f = this.filters();
-    const type = this.collectionType();
+    const cType = this.collectionType();
     let list = this.allProducts.filter(p => {
-      if (p.collection !== type) return false;
+      // Filter by collection (if not 'all')
+      if (cType !== 'all' && p.collection !== cType) return false;
+      // Filter by type (ring, necklace, etc.)
+      if (f.type !== 'all' && p.type !== f.type) return false;
+      // Filter by style
       if (f.style !== 'all' && p.style !== f.style) return false;
+      // Filter by metal
       if (f.metal !== 'all' && !p.metals.includes(f.metal as MetalType)) return false;
+      // Filter by price
       if (f.priceGroup !== 'all' && p.priceGroup !== f.priceGroup) return false;
       return true;
     });
@@ -72,13 +93,26 @@ export class CollectionComponent implements OnInit {
   });
 
   ngOnInit() {
-    // Detect collection from URL — supports both /wedding and /:theme/wedding
+    // Listen to both URL segments and query params
     this.route.url.subscribe(segments => {
       const paths = segments.map(s => s.path);
-      // 'wedding' can be at index 0 (/wedding) or index 1 (/warm/wedding)
       const isWedding = paths.includes('wedding');
-      this.collectionType.set(isWedding ? 'wedding' : 'engagement');
+      const isEngagement = paths.includes('engagement');
+      const isShop = paths.includes('shop');
+
+      if (isWedding) this.collectionType.set('wedding');
+      else if (isEngagement) this.collectionType.set('engagement');
+      else if (isShop) this.collectionType.set('all');
+      else this.collectionType.set('engagement');
+
       this.resetFilters();
+
+      // After setting collection, check for type query param
+      this.route.queryParams.subscribe(params => {
+        if (params['type']) {
+          this.filters.update(f => ({ ...f, type: params['type'] }));
+        }
+      });
     });
 
     this.svc.getProducts().subscribe(p => {
@@ -95,15 +129,33 @@ export class CollectionComponent implements OnInit {
   setPriceGroup(v: string) {
     this.filters.update(f => ({ ...f, priceGroup: v as PriceGroup | 'all' }));
   }
+  setType(v: string) {
+    this.filters.update(f => ({ ...f, type: v as any }));
+  }
   setSort(v: string) {
     this.filters.update(f => ({ ...f, sort: v as SortOption }));
   }
   resetFilters() {
-    this.filters.set({ style: 'all', metal: 'all', priceGroup: 'all', sort: 'featured' });
+    this.filters.set({ style: 'all', metal: 'all', priceGroup: 'all', type: 'all', sort: 'featured' });
   }
 
   openModal(p: Product)  { this.selectedProduct = p; document.body.style.overflow = 'hidden'; }
   closeModal()            { this.selectedProduct = null; document.body.style.overflow = ''; }
+
+  addToWishlist(p: Product) {
+    this.wishSvc.toggle({
+      id: p.id,
+      name: p.name,
+      basePrice: p.basePrice,
+      img: p.img,
+      category: p.category,
+      tag: p.tag,
+      metal: p.metals[0], // default to first metal
+      collection: p.collection
+    });
+    const exists = this.wishSvc.isInWishlist(p.id);
+    this.showToast(exists ? 'Added to wishlist ♥' : 'Removed from wishlist');
+  }
 
   showToast(msg: string) {
     this.toastMsg = msg;

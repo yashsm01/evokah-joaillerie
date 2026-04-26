@@ -10,6 +10,7 @@ export interface Translations {
   nav_story:       string;
   nav_atelier:     string;
   nav_search_placeholder: string;
+  header_announcement: string;
   announcement:    string;
 
   // Collection page
@@ -48,6 +49,7 @@ const EN: Translations = {
   nav_story:       'Our Story',
   nav_atelier:     'Atelier',
   nav_search_placeholder: 'Search rings, gemstones, styles…',
+  header_announcement: '✦ Complimentary shipping on all orders | Book a private consultation | Ethical & sustainable jewellery ✦',
   announcement:    '✦ Complimentary shipping on all orders | Book a private consultation | Ethical & sustainable jewellery ✦',
 
   col_filter_all:  'All',
@@ -82,6 +84,7 @@ const FR: Translations = {
   nav_story:       'Notre Histoire',
   nav_atelier:     'Atelier',
   nav_search_placeholder: 'Rechercher bagues, pierres, styles…',
+  header_announcement: '✦ Livraison offerte sur toutes les commandes | Consultation privée disponible | Joaillerie éthique & durable ✦',
   announcement:    '✦ Livraison offerte sur toutes les commandes | Consultation privée disponible | Joaillerie éthique & durable ✦',
 
   col_filter_all:  'Tout',

@@ -16,6 +16,8 @@ export const routes: Routes = [
   { path: ':theme/wedding',    loadComponent: collection },
   { path: ':theme/cart',       loadComponent: cart       },
   { path: ':theme/story',      loadComponent: story      },
+  { path: ':theme/wishlist',   loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent) },
+  { path: ':theme/shop',       loadComponent: collection },
   { path: ':theme/home',       loadComponent: collection },  // home with theme
 
   // ── Standard routes (no theme prefix) ───────────────────────
@@ -24,6 +26,8 @@ export const routes: Routes = [
   { path: 'wedding',    loadComponent: collection },
   { path: 'cart',       loadComponent: cart       },
   { path: 'story',      loadComponent: story      },
+  { path: 'wishlist',   loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent) },
+  { path: 'shop',       loadComponent: collection },
 
   { path: '**', redirectTo: '' },
 ];

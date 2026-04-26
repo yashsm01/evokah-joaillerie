@@ -1,0 +1,148 @@
+<!-- ── PAGE HEADER ─────────────────────────────────────────── -->
+<section class="wish-hero">
+  <div class="container wish-hero-inner">
+    <p class="hero-eyebrow">Your Wishlist</p>
+    <h1 class="wish-title">
+      <em>Curated</em> &nbsp;Desires
+    </h1>
+    <p class="wish-subtitle" *ngIf="wishSvc.count() > 0">
+      {{ wishSvc.count() }} {{ wishSvc.count() === 1 ? 'piece' : 'pieces' }} saved
+    </p>
+    <div class="hero-shimmer"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     WISHLIST CONTENT
+     ══════════════════════════════════════════════════════════ -->
+<section class="wish-section">
+  <div class="container">
+
+    <!-- ── EMPTY STATE ──────────────────────────────────── -->
+    <div class="wish-empty" *ngIf="wishSvc.count() === 0">
+      <div class="empty-icon" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </div>
+      <h2 class="empty-title">Your wishlist is empty</h2>
+      <p class="empty-desc">
+        Save the pieces that speak to you. Browse our collections and tap the heart
+        on any ring to save it here.
+      </p>
+      <div class="empty-actions">
+        <a routerLink="/engagement" class="btn-primary">Engagement Rings</a>
+        <a routerLink="/wedding" class="btn-ghost">Wedding Bands</a>
+      </div>
+    </div>
+
+    <!-- ── WISHLIST GRID ─────────────────────────────────── -->
+    <div *ngIf="wishSvc.count() > 0">
+
+      <!-- Top toolbar -->
+      <div class="wish-toolbar">
+        <p class="toolbar-count">
+          <span class="gold-text">{{ wishSvc.count() }}</span>
+          {{ wishSvc.count() === 1 ? 'saved piece' : 'saved pieces' }}
+        </p>
+        <button class="clear-btn" (click)="clearAll()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+          </svg>
+          Clear All
+        </button>
+      </div>
+
+      <!-- Grid -->
+      <div class="wish-grid">
+        <div class="wish-card" *ngFor="let item of wishSvc.items()">
+
+          <!-- Product image -->
+          <div class="wish-card-img">
+            <img [src]="item.img" [alt]="item.name" loading="lazy" />
+            <button class="remove-btn" (click)="remove(item.id)" aria-label="Remove from wishlist"
+                    title="Remove">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+            <span class="wish-tag" *ngIf="item.tag">{{ item.tag }}</span>
+          </div>
+
+          <!-- Product info -->
+          <div class="wish-card-body">
+            <p class="card-category">{{ item.collection | titlecase }}</p>
+            <h3 class="card-name">{{ item.name }}</h3>
+            <p class="card-metal">{{ item.metal }}</p>
+            <p class="card-price">
+              <span class="price-from">From</span>
+              {{ wishSvc.formatPrice(item.basePrice) }}
+            </p>
+
+            <!-- Actions -->
+            <div class="card-actions">
+              <button class="btn-move-cart" (click)="moveToCart(item)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                Move to Cart
+              </button>
+              <a [routerLink]="['/' + item.collection]" class="btn-view">
+                View
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="wish-footer">
+        <div class="wish-summary-line">
+          <p class="wish-summary-text">
+            Love everything you saved?
+          </p>
+          <a routerLink="/cart" class="btn-primary">View Cart</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Trust signals -->
+    <div class="trust-row">
+      <div class="trust-chip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Conflict-Free Certified
+      </div>
+      <div class="trust-chip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+        </svg>
+        30-Day Returns
+      </div>
+      <div class="trust-chip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 10H3M16 5l5 5-5 5M8 5l-5 5 5 5"/>
+        </svg>
+        Free Worldwide Shipping
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TOAST ──────────────────────────────────────────────── -->
+<div class="toast" [class.visible]="toastVisible" role="status" aria-live="polite">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  {{ toastMsg }}
+</div>

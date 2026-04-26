@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   category: string;
   style: ProductStyle;
+  type: ProductType; // New field for top-level category
   tag?: string;
   basePrice: number;
   metals: MetalType[];
@@ -10,10 +11,12 @@ export interface Product {
   img: string;
   metalImages?: Partial<Record<MetalType, string>>;  // per-metal image overrides
   priceGroup: PriceGroup;
-  collection: 'engagement' | 'wedding';
+  collection: 'engagement' | 'wedding' | 'all';
   description?: string;
   slug?: string;
 }
+
+export type ProductType = 'ring' | 'necklace' | 'earring' | 'bracelet';
 
 export type ProductStyle =
   | 'all'
@@ -26,7 +29,10 @@ export type ProductStyle =
   | 'eternity'
   | 'plain'
   | 'patterned'
-  | 'contour';
+  | 'contour'
+  | 'pendant'   // added for necklaces
+  | 'stud'      // added for earrings
+  | 'hoop';     // added for earrings
 
 export type MetalType =
   | 'yellow-gold'
@@ -51,6 +57,7 @@ export interface ProductFilters {
   style: ProductStyle | 'all';
   metal: MetalType | 'all';
   priceGroup: PriceGroup | 'all';
+  type: ProductType | 'all'; // New filter
   sort: SortOption;
 }
 
