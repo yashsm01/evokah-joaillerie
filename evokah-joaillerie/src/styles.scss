@@ -431,7 +431,10 @@ body {
   background: var(--bg-page);
   color: var(--text-primary);
   overflow-x: hidden;
-  transition: background var(--transition), color var(--transition);
+  /* Smooth transition when theme changes between routes */
+  transition:
+    background-color .5s cubic-bezier(.4,0,.2,1),
+    color .5s cubic-bezier(.4,0,.2,1);
 }
 
 a {

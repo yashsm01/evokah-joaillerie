@@ -72,10 +72,12 @@ export class CollectionComponent implements OnInit {
   });
 
   ngOnInit() {
-    // Detect collection from URL
-    this.route.url.subscribe(url => {
-      const path = url[0]?.path || '';
-      this.collectionType.set(path === 'wedding' ? 'wedding' : 'engagement');
+    // Detect collection from URL — supports both /wedding and /:theme/wedding
+    this.route.url.subscribe(segments => {
+      const paths = segments.map(s => s.path);
+      // 'wedding' can be at index 0 (/wedding) or index 1 (/warm/wedding)
+      const isWedding = paths.includes('wedding');
+      this.collectionType.set(isWedding ? 'wedding' : 'engagement');
       this.resetFilters();
     });
 
