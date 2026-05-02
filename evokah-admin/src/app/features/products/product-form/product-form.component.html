@@ -1,0 +1,162 @@
+<div class="page-container" *ngIf="!loading">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button class="back-btn" routerLink="/dashboard/products">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2>{{ productId ? 'Edit Product' : 'Create New Product' }}</h2>
+        <p *ngIf="productId">Updating product details and media.</p>
+        <p *ngIf="!productId">Add a new jewellery piece to your catalogue.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-button routerLink="/dashboard/products" [disabled]="saving">Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="saving">
+        <mat-icon>save</mat-icon> {{ saving ? 'Saving...' : 'Save Product' }}
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="form" class="form-layout">
+
+    <!-- Left Column: Main Details -->
+    <div class="main-column">
+      
+      <!-- Basic Info Card -->
+      <div class="form-card">
+        <h3 class="card-title">Basic Information</h3>
+        
+        <div class="field-row">
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>Product Name</mat-label>
+            <input matInput formControlName="name" placeholder="e.g. Classic Solitaire Ring" (blur)="generateSlug()">
+            <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="field-row">
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>Slug (URL)</mat-label>
+            <input matInput formControlName="slug" placeholder="e.g. classic-solitaire-ring">
+            <mat-error *ngIf="form.get('slug')?.hasError('required')">Slug is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>SKU</mat-label>
+            <input matInput formControlName="sku" placeholder="e.g. R-SOL-001">
+            <mat-error *ngIf="form.get('sku')?.hasError('required')">SKU is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="field-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="4" placeholder="Describe the product..."></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Pricing & Media Card -->
+      <div class="form-card">
+        <h3 class="card-title">Pricing & Media</h3>
+        
+        <div class="field-row">
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>Base Price (USD)</mat-label>
+            <span matPrefix>$ &nbsp;</span>
+            <input matInput type="number" formControlName="basePrice" placeholder="0.00">
+            <mat-error *ngIf="form.get('basePrice')?.hasError('required')">Price is required</mat-error>
+            <mat-error *ngIf="form.get('basePrice')?.hasError('min')">Price must be positive</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="media-upload-area">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <div class="upload-text">Drag and drop product images here, or click to browse</div>
+          <div class="upload-sub">Supports JPG, PNG, WEBP (Max 5MB per file)</div>
+          <button mat-stroked-button type="button" class="mt-3">Select Files</button>
+          <!-- Hidden input would go here -->
+        </div>
+
+        <div class="media-upload-area mt-3">
+          <mat-icon class="upload-icon">3d_rotation</mat-icon>
+          <div class="upload-text">Upload 3D Model (.glb / .gltf)</div>
+          <button mat-stroked-button type="button" class="mt-2">Select 3D File</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Settings & Taxonomy -->
+    <div class="side-column">
+      
+      <!-- Status Card -->
+      <div class="form-card">
+        <h3 class="card-title">Visibility Status</h3>
+        <div class="toggle-row">
+          <mat-slide-toggle formControlName="isActive" color="primary">
+            Active (Visible on store)
+          </mat-slide-toggle>
+        </div>
+        <div class="toggle-row mt-3">
+          <mat-slide-toggle formControlName="isFeatured" color="accent">
+            Featured Product
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <!-- Organization Card -->
+      <div class="form-card">
+        <h3 class="card-title">Organisation</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Collection</mat-label>
+          <mat-select formControlName="collectionId">
+            <mat-option [value]="null">None</mat-option>
+            <mat-option *ngFor="let col of collections" [value]="col.id">{{ col.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Product Type</mat-label>
+          <mat-select formControlName="typeId">
+            <mat-option [value]="null">None</mat-option>
+            <mat-option *ngFor="let type of types" [value]="type.id">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Attributes Card -->
+      <div class="form-card">
+        <h3 class="card-title">Attributes (Multi-select)</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Available Metals</mat-label>
+          <mat-select formControlName="metals" multiple>
+            <mat-option *ngFor="let metal of metals" [value]="metal.id">
+              <span class="color-dot" [style.background]="metal.hexColor"></span>
+              {{ metal.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Available Shapes</mat-label>
+          <mat-select formControlName="shapes" multiple>
+            <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{ shape.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<!-- Loading State -->
+<div class="loading-state" *ngIf="loading">
+  <mat-spinner diameter="40"></mat-spinner>
+  <span>Loading data...</span>
+</div>

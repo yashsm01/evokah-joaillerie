@@ -1,0 +1,98 @@
+<!-- ── DASHBOARD HOME ─────────────────────────────── -->
+<div class="dash-root">
+
+  <!-- ── PAGE HEADER ──────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h2>Dashboard</h2>
+      <p>Welcome back, {{ (user$ | async)?.firstName }}! Here's what's happening today.</p>
+    </div>
+    <div class="header-actions">
+      <span class="date-badge">
+        <mat-icon>calendar_today</mat-icon>
+        {{ today | date:'mediumDate' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- ── STAT CARDS ──────────────────────────────── -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let s of stats">
+      <div class="stat-icon" [style.background]="s.iconBg">
+        <mat-icon [style.color]="s.iconColor">{{ s.icon }}</mat-icon>
+      </div>
+      <div class="stat-body">
+        <span class="stat-value">{{ s.value }}</span>
+        <span class="stat-label">{{ s.label }}</span>
+      </div>
+      <div class="stat-trend" [class.up]="s.trend > 0" [class.down]="s.trend < 0" *ngIf="s.trend !== 0">
+        <mat-icon>{{ s.trend > 0 ? 'trending_up' : 'trending_down' }}</mat-icon>
+        <span>{{ s.trend > 0 ? '+' : '' }}{{ s.trend }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QUICK ACTIONS ────────────────────────────── -->
+  <div class="section-title">Quick Actions</div>
+  <div class="quick-actions">
+    <a class="qa-card" routerLink="/dashboard/products/new">
+      <div class="qa-icon" style="background: rgba(59,130,246,.1)">
+        <mat-icon style="color:#3b82f6">add_box</mat-icon>
+      </div>
+      <span class="qa-label">Add Product</span>
+      <span class="qa-sub">Create a new jewellery item</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+    <a class="qa-card" routerLink="/dashboard/masters/collections">
+      <div class="qa-icon" style="background: rgba(212,175,55,.12)">
+        <mat-icon style="color:#b8960c">collections</mat-icon>
+      </div>
+      <span class="qa-label">Manage Collections</span>
+      <span class="qa-sub">Organise Engagement, Wedding…</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+    <a class="qa-card" routerLink="/dashboard/masters/metals">
+      <div class="qa-icon" style="background: rgba(168,85,247,.1)">
+        <mat-icon style="color:#a855f7">category</mat-icon>
+      </div>
+      <span class="qa-label">Manage Metals</span>
+      <span class="qa-sub">Gold, Platinum & more</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+    <a class="qa-card" routerLink="/dashboard/settings">
+      <div class="qa-icon" style="background: rgba(34,197,94,.1)">
+        <mat-icon style="color:#22c55e">tune</mat-icon>
+      </div>
+      <span class="qa-label">Site Settings</span>
+      <span class="qa-sub">Theme, announcement bar</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+    <a class="qa-card" routerLink="/dashboard/content">
+      <div class="qa-icon" style="background: rgba(239,68,68,.1)">
+        <mat-icon style="color:#ef4444">article</mat-icon>
+      </div>
+      <span class="qa-label">Content & CMS</span>
+      <span class="qa-sub">FAQs, Reviews, Translations</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+    <a class="qa-card" routerLink="/dashboard/masters/shapes">
+      <div class="qa-icon" style="background: rgba(245,158,11,.1)">
+        <mat-icon style="color:#f59e0b">shapes</mat-icon>
+      </div>
+      <span class="qa-label">Shapes & Styles</span>
+      <span class="qa-sub">Round, Oval, Halo…</span>
+      <mat-icon class="qa-arrow">chevron_right</mat-icon>
+    </a>
+  </div>
+
+  <!-- ── INFO BANNER ────────────────────────────────── -->
+  <div class="info-banner">
+    <div class="info-icon">
+      <mat-icon>info</mat-icon>
+    </div>
+    <div class="info-text">
+      <strong>Multi-tenant mode active.</strong> All data operations are scoped to the current company. Use the company selector to switch tenants.
+    </div>
+  </div>
+
+</div>

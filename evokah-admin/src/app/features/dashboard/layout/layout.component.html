@@ -1,0 +1,72 @@
+<div class="layout-wrapper">
+  
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span>Evokah</span>
+    </div>
+
+    <div class="nav-menu">
+      <div class="nav-section">Dashboard</div>
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <mat-icon>insights</mat-icon> Overview
+      </a>
+
+      <div class="nav-section">Catalog</div>
+      <a routerLink="/dashboard/products" routerLinkActive="active" class="nav-item">
+        <mat-icon>inventory_2</mat-icon> Products
+      </a>
+      <a routerLink="/dashboard/masters/collections" routerLinkActive="active" class="nav-item">
+        <mat-icon>collections</mat-icon> Collections
+      </a>
+      
+      <div class="nav-section">Taxonomy</div>
+      <a routerLink="/dashboard/masters/metals" routerLinkActive="active" class="nav-item">
+        <mat-icon>layers</mat-icon> Metals
+      </a>
+      <a routerLink="/dashboard/masters/shapes" routerLinkActive="active" class="nav-item">
+        <mat-icon>diamond</mat-icon> Shapes
+      </a>
+      <a routerLink="/dashboard/masters/styles" routerLinkActive="active" class="nav-item">
+        <mat-icon>style</mat-icon> Styles
+      </a>
+      <a routerLink="/dashboard/masters/types" routerLinkActive="active" class="nav-item">
+        <mat-icon>category</mat-icon> Types
+      </a>
+    </div>
+
+    <!-- USER PROFILE -->
+    <div class="user-footer" *ngIf="user$ | async as user">
+      <div class="user-avatar">{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</div>
+      <div class="user-info">
+        <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+        <span class="user-role">{{ user.Role.name.replace('_', ' ') }}</span>
+      </div>
+      <button class="logout-btn" (click)="logout()" title="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main class="main-area">
+    
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <div class="company-badge">
+        <mat-icon>diamond</mat-icon> Evokah Joaillerie
+      </div>
+      <div class="actions">
+        <button class="icon-btn"><mat-icon>notifications_none</mat-icon></button>
+        <button class="icon-btn"><mat-icon>settings</mat-icon></button>
+      </div>
+    </header>
+
+    <!-- ROUTER OUTLET -->
+    <div class="content-scroll">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+
+</div>

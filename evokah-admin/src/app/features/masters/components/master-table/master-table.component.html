@@ -1,0 +1,155 @@
+<!-- ── MASTER TABLE COMPONENT ────────────────────── -->
+<div class="master-root">
+
+  <!-- ── HEADER ─────────────────────────────────── -->
+  <div class="master-header">
+    <div class="header-left">
+      <h2>{{ title }}</h2>
+      <p *ngIf="description">{{ description }}</p>
+    </div>
+    <button class="btn-add" (click)="openAdd()">
+      <mat-icon>add</mat-icon> Add New
+    </button>
+  </div>
+
+  <!-- ── SEARCH BAR ─────────────────────────────── -->
+  <div class="search-bar">
+    <mat-icon class="search-icon">search</mat-icon>
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="applyFilter()"
+      [placeholder]="'Search ' + title.toLowerCase() + '...'"
+      class="search-input">
+    <button *ngIf="searchQuery" class="clear-btn" (click)="searchQuery=''; applyFilter()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- ── LOADING ─────────────────────────────────── -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-progress-spinner diameter="40" mode="indeterminate" color="accent"></mat-progress-spinner>
+    <span>Loading...</span>
+  </div>
+
+  <!-- ── TABLE ──────────────────────────────────── -->
+  <div class="table-wrap mat-elevation-z2" *ngIf="!loading">
+    <table mat-table [dataSource]="filteredItems" [trackBy]="trackById">
+
+      <!-- Dynamic columns -->
+      <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+        <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container [ngSwitch]="col.type">
+            <ng-container *ngSwitchCase="'badge'">
+              <span class="status-chip" [class.active]="row[col.key]" [class.inactive]="!row[col.key]">
+                {{ row[col.key] ? 'Active' : 'Inactive' }}
+              </span>
+            </ng-container>
+            <ng-container *ngSwitchCase="'color'">
+              <div class="color-cell">
+                <div class="color-swatch" [style.background]="row[col.key]"></div>
+                <span>{{ row[col.key] }}</span>
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              {{ row[col.key] ?? '—' }}
+            </ng-container>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!-- Actions column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-col">Actions</th>
+        <td mat-cell *matCellDef="let row" class="actions-col">
+          <div class="row-actions">
+            <button class="action-btn edit" (click)="openEdit(row)" title="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button class="action-btn toggle" (click)="toggleActive(row)" [title]="row.isActive ? 'Deactivate' : 'Activate'">
+              <mat-icon>{{ row.isActive ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+            </button>
+            <button class="action-btn delete" (click)="confirmDelete(row)" title="Delete">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Empty state -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="empty-state" [attr.colspan]="displayedColumns.length">
+          <mat-icon>inbox</mat-icon>
+          <span>No records found</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── COUNT ──────────────────────────────────── -->
+  <div class="table-footer" *ngIf="!loading">
+    <span class="count">{{ filteredItems.length }} record{{ filteredItems.length !== 1 ? 's' : '' }}</span>
+  </div>
+</div>
+
+<!-- ── ADD / EDIT DIALOG ─────────────────────────── -->
+<ng-template #dialogTpl>
+  <div class="dialog-header">
+    <h3>{{ editingId ? 'Edit' : 'Add' }} {{ title }}</h3>
+    <button class="dialog-close" mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-dialog-content>
+    <form [formGroup]="form" class="dialog-form">
+      <ng-container *ngFor="let field of fields">
+
+        <!-- Color picker -->
+        <div class="field-group" *ngIf="field.type === 'color'">
+          <label>{{ field.label }}<span *ngIf="field.required" class="req">*</span></label>
+          <div class="color-field">
+            <input type="color" [formControlName]="field.key" class="color-picker">
+            <input type="text" [formControlName]="field.key" class="color-text" placeholder="#ffffff">
+          </div>
+        </div>
+
+        <!-- Select field -->
+        <div class="field-group" *ngIf="field.type === 'select'">
+          <label>{{ field.label }}<span *ngIf="field.required" class="req">*</span></label>
+          <select [formControlName]="field.key" class="field-select">
+            <option [ngValue]="null">— Select —</option>
+            <option *ngFor="let opt of field.options" [value]="opt.value">{{ opt.label }}</option>
+          </select>
+        </div>
+
+        <!-- Number field -->
+        <div class="field-group" *ngIf="field.type === 'number'">
+          <label>{{ field.label }}<span *ngIf="field.required" class="req">*</span></label>
+          <div class="input-wrap" [class.error]="form.get(field.key)?.invalid && form.get(field.key)?.touched">
+            <input type="number" [formControlName]="field.key" [placeholder]="field.label">
+          </div>
+        </div>
+
+        <!-- Default text -->
+        <div class="field-group" *ngIf="!field.type || field.type === 'text'">
+          <label>{{ field.label }}<span *ngIf="field.required" class="req">*</span></label>
+          <div class="input-wrap" [class.error]="form.get(field.key)?.invalid && form.get(field.key)?.touched">
+            <input type="text" [formControlName]="field.key" [placeholder]="field.label">
+          </div>
+          <span class="field-error" *ngIf="form.get(field.key)?.hasError('required') && form.get(field.key)?.touched">
+            {{ field.label }} is required
+          </span>
+        </div>
+
+      </ng-container>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="btn-cancel" mat-dialog-close>Cancel</button>
+    <button class="btn-save" (click)="save()" [disabled]="saving">
+      {{ saving ? 'Saving...' : (editingId ? 'Update' : 'Create') }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,77 @@
+<!-- ── AUTH / LOGIN PAGE ─────────────────────────── -->
+<div class="auth-root">
+  <!-- Left decorative panel -->
+  <div class="auth-panel">
+    <div class="panel-content">
+      <div class="brand">
+        <span class="brand-diamond">◆</span>
+        <span class="brand-name">Evokah Joaillerie</span>
+      </div>
+      <h1 class="panel-title">Master Admin</h1>
+      <p class="panel-subtitle">
+        Manage your jewellery collections, products, taxonomy and content — all from one powerful dashboard.
+      </p>
+      <ul class="feature-list">
+        <li><mat-icon>diamond</mat-icon> Multi-tenant product management</li>
+        <li><mat-icon>tune</mat-icon> Full taxonomy & master data control</li>
+        <li><mat-icon>cloud_upload</mat-icon> Media & 3D model uploads</li>
+        <li><mat-icon>palette</mat-icon> Theme & content customisation</li>
+      </ul>
+    </div>
+    <div class="panel-decoration">
+      <div class="deco-ring ring-1"></div>
+      <div class="deco-ring ring-2"></div>
+      <div class="deco-ring ring-3"></div>
+    </div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="auth-form-panel">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="logo-icon">◆</span>
+      </div>
+      <h2 class="auth-title">Sign In</h2>
+      <p class="auth-sub">Welcome back. Please enter your credentials.</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+        <div class="field-group">
+          <label>Email Address</label>
+          <div class="input-wrap" [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <mat-icon class="input-icon">email</mat-icon>
+            <input type="email" formControlName="email" placeholder="admin@evokah.com" autocomplete="email">
+          </div>
+          <span class="field-error" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+            Email is required
+          </span>
+          <span class="field-error" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+            Enter a valid email
+          </span>
+        </div>
+
+        <div class="field-group">
+          <label>Password</label>
+          <div class="input-wrap" [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <mat-icon class="input-icon">lock</mat-icon>
+            <input [type]="showPw ? 'text' : 'password'" formControlName="password" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="pw-toggle" (click)="showPw = !showPw">
+              <mat-icon>{{ showPw ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+          <span class="field-error" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Password is required
+          </span>
+        </div>
+
+        <div class="server-error" *ngIf="error">
+          <mat-icon>error_outline</mat-icon> {{ error }}
+        </div>
+
+        <button class="btn-signin" type="submit" [disabled]="loginForm.invalid || loading">
+          <span *ngIf="!loading">Sign In <mat-icon>arrow_forward</mat-icon></span>
+          <span *ngIf="loading" class="loading-dots">Signing in<span>.</span><span>.</span><span>.</span></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

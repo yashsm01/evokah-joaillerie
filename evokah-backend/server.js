@@ -13,8 +13,9 @@ async function start() {
     await sequelize.authenticate();
     console.log('✅  PostgreSQL connected');
 
-    // sync({ alter: true }) updates tables to match models without dropping data
-    await sequelize.sync({ alter: true });
+    // Use sync() without { alter: true } to prevent constraint drop errors on nodemon restarts.
+    // If schema changes are needed, run the seeder or use migrations.
+    await sequelize.sync();
     console.log('✅  Database tables synced');
 
     app.listen(PORT, () => {
