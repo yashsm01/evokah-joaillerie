@@ -1,5 +1,6 @@
 'use strict';
 // ── All Models ─────────────────────────────────────────────────
+const Company     = require('./masters/Company');
 const Collection  = require('./masters/Collection');
 const ProductType = require('./masters/ProductType');
 const Category    = require('./masters/Category');
@@ -13,6 +14,18 @@ const { ProductMetal, ProductShape } = require('./product/ProductJunctions');
 const { Role, User } = require('./user/UserModels');
 const { CartItem, WishlistItem, SystemSetting, Review, FaqItem } = require('./content/ContentModels');
 const { Translation, StoryContent } = require('./content/CmsModels');
+
+// ── Multi-Tenant Associations (Company) ────────────────────────
+const tenantModels = [
+  Collection, ProductType, Category, Style, Shape, Metal, PriceGroup,
+  Product, User, SystemSetting, Review, FaqItem, Translation, StoryContent,
+  CartItem, WishlistItem
+];
+
+tenantModels.forEach(Model => {
+  Company.hasMany(Model, { foreignKey: 'companyId' });
+  Model.belongsTo(Company, { foreignKey: 'companyId', as: 'company' });
+});
 
 // ── Associations ───────────────────────────────────────────────
 // Product → Masters (BelongsTo)
@@ -56,7 +69,7 @@ WishlistItem.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
 WishlistItem.belongsTo(Metal,   { foreignKey: 'metalId', as: 'metal' });
 
 module.exports = {
-  Collection, ProductType, Category, Style, Shape, Metal, PriceGroup,
+  Company, Collection, ProductType, Category, Style, Shape, Metal, PriceGroup,
   Product, ProductMedia, ProductMetal, ProductShape,
   Role, User,
   CartItem, WishlistItem, SystemSetting, Review, FaqItem,

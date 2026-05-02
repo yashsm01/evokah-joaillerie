@@ -33,15 +33,17 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 // JSON spec endpoint
 app.get('/api/docs.json', (req, res) => res.json(swaggerSpec));
 
-// ── API Routes ─────────────────────────────────────────────────
-app.use('/api/auth',     authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/masters',  masterRoutes);
-app.use('/api/media',    mediaRoutes);
-app.use('/api/settings', settingsRoutes);
-app.use('/api/cart',     cartRoutes);
-app.use('/api/wishlist', wishlistRoutes);
-app.use('/api/content',  contentRoutes);
+const tenantMiddleware = require('./middleware/tenant.middleware');
+
+// ── API Routes (Tenant Scoped) ─────────────────────────────────
+app.use('/api/auth',     tenantMiddleware, authRoutes);
+app.use('/api/products', tenantMiddleware, productRoutes);
+app.use('/api/masters',  tenantMiddleware, masterRoutes);
+app.use('/api/media',    tenantMiddleware, mediaRoutes);
+app.use('/api/settings', tenantMiddleware, settingsRoutes);
+app.use('/api/cart',     tenantMiddleware, cartRoutes);
+app.use('/api/wishlist', tenantMiddleware, wishlistRoutes);
+app.use('/api/content',  tenantMiddleware, contentRoutes);
 
 // ── Health Check ───────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));

@@ -28,7 +28,7 @@ const ContentController = {
    */
   async getStory(req, res) {
     try {
-      const all = await StoryContent.findAll({ order: [['sortOrder', 'ASC']] });
+      const all = await StoryContent.findAll({ where: { companyId: req.tenant.id }, order: [['sortOrder', 'ASC']] });
       const grouped = { milestones: [], stats: [], values: [] };
       all.forEach(item => {
         if (grouped[item.type + 's']) grouped[item.type + 's'].push(item);
@@ -40,6 +40,7 @@ const ContentController = {
   /** PUT /content/story — MASTER_ADMIN */
   async upsertStoryItem(req, res) {
     try {
+      req.body.companyId = req.tenant.id;
       const item = req.body.id
         ? await StoryContent.upsert(req.body)
         : await StoryContent.create(req.body);
@@ -64,7 +65,7 @@ const ContentController = {
    */
   async getFaq(req, res) {
     try {
-      const where = req.query.collection ? { collectionSlug: req.query.collection } : {};
+      const where = req.query.collection ? { collectionSlug: req.query.collection, companyId: req.tenant.id } : { companyId: req.tenant.id };
       res.json(await FaqItem.findAll({ where, order: [['sortOrder', 'ASC']] }));
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -85,7 +86,7 @@ const ContentController = {
    */
   async getReviews(req, res) {
     try {
-      const where = req.query.collection ? { collectionSlug: req.query.collection } : {};
+      const where = req.query.collection ? { collectionSlug: req.query.collection, companyId: req.tenant.id } : { companyId: req.tenant.id };
       res.json(await Review.findAll({ where, order: [['featured', 'DESC']] }));
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -93,7 +94,7 @@ const ContentController = {
   /** POST /content/reviews — MASTER_ADMIN */
   async createReview(req, res) {
     try {
-      const review = await Review.create(req.body);
+      const review = await Review.create({ ...req.body, companyId: req.tenant.id });
       res.status(201).json(review);
     } catch (err) { res.status(400).json({ message: err.message }); }
   },
@@ -116,7 +117,7 @@ const ContentController = {
    */
   async getTranslations(req, res) {
     try {
-      const rows = await Translation.findAll();
+      const rows = await Translation.findAll({ where: { companyId: req.tenant.id } });
       const result = { en: {}, fr: {} };
       rows.forEach(r => { result[r.lang][r.key] = r.value; });
       res.json(result);
@@ -127,7 +128,7 @@ const ContentController = {
   async updateTranslation(req, res) {
     try {
       const { lang, key, value } = req.body;
-      await Translation.upsert({ lang, key, value });
+      await Translation.upsert({ lang, key, value, companyId: req.tenant.id });
       res.json({ message: 'Translation updated' });
     } catch (err) { res.status(400).json({ message: err.message }); }
   },

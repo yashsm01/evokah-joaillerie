@@ -6,6 +6,7 @@ const sequelize = require('../../config/database');
 // Belongs to a Collection (optional — some categories span both)
 const Category = sequelize.define('Category', {
   id:           { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId:    { type: DataTypes.UUID, allowNull: false },
   name:         { type: DataTypes.STRING, allowNull: false },
   slug:         { type: DataTypes.STRING, allowNull: false, unique: true },
   collectionId: { type: DataTypes.UUID, allowNull: true },   // FK set in index.js

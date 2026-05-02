@@ -45,7 +45,7 @@ const ProductController = {
   async getAll(req, res) {
     try {
       const { collection, type, style, metal, priceGroup, sort } = req.query;
-      const where = { isActive: true };
+      const where = { isActive: true, companyId: req.tenant.id };
       const include = [
         { model: Collection,  as: 'collection' },
         { model: ProductType, as: 'type' },
@@ -98,7 +98,7 @@ const ProductController = {
   async getBySlug(req, res) {
     try {
       const product = await Product.findOne({
-        where: { slug: req.params.slug, isActive: true },
+        where: { slug: req.params.slug, isActive: true, companyId: req.tenant.id },
         include: [
           { model: Collection,  as: 'collection' },
           { model: ProductType, as: 'type' },
@@ -120,7 +120,7 @@ const ProductController = {
   /** POST /products — MASTER_ADMIN / EDITOR */
   async create(req, res) {
     try {
-      const product = await Product.create(req.body);
+      const product = await Product.create({ ...req.body, companyId: req.tenant.id });
       res.status(201).json(product);
     } catch (err) {
       res.status(400).json({ message: err.message });
@@ -130,7 +130,7 @@ const ProductController = {
   /** PUT /products/:id — MASTER_ADMIN / EDITOR */
   async update(req, res) {
     try {
-      const [updated] = await Product.update(req.body, { where: { id: req.params.id } });
+      const [updated] = await Product.update(req.body, { where: { id: req.params.id, companyId: req.tenant.id } });
       if (!updated) return res.status(404).json({ message: 'Product not found' });
       res.json({ message: 'Updated successfully' });
     } catch (err) {
@@ -141,7 +141,7 @@ const ProductController = {
   /** DELETE /products/:id — MASTER_ADMIN (soft delete) */
   async remove(req, res) {
     try {
-      await Product.update({ isActive: false }, { where: { id: req.params.id } });
+      await Product.update({ isActive: false }, { where: { id: req.params.id, companyId: req.tenant.id } });
       res.json({ message: 'Product deactivated' });
     } catch (err) {
       res.status(500).json({ message: err.message });

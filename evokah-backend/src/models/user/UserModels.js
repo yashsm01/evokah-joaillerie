@@ -27,6 +27,7 @@ const Role = sequelize.define('Role', {
  */
 const User = sequelize.define('User', {
   id:           { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId:    { type: DataTypes.UUID, allowNull: false },
   firstName:    { type: DataTypes.STRING, allowNull: false },
   lastName:     { type: DataTypes.STRING, allowNull: false },
   email:        { type: DataTypes.STRING, allowNull: false, unique: true, validate: { isEmail: true } },

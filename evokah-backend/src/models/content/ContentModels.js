@@ -4,6 +4,7 @@ const sequelize = require('../../config/database');
 
 const CartItem = sequelize.define('CartItem', {
   id:        { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId: { type: DataTypes.UUID, allowNull: false },
   userId:    { type: DataTypes.UUID, allowNull: false },
   productId: { type: DataTypes.UUID, allowNull: false },
   metalId:   { type: DataTypes.UUID, allowNull: false },
@@ -12,6 +13,7 @@ const CartItem = sequelize.define('CartItem', {
 
 const WishlistItem = sequelize.define('WishlistItem', {
   id:        { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId: { type: DataTypes.UUID, allowNull: false },
   userId:    { type: DataTypes.UUID, allowNull: false },
   productId: { type: DataTypes.UUID, allowNull: false },
   metalId:   { type: DataTypes.UUID, allowNull: false },
@@ -19,12 +21,18 @@ const WishlistItem = sequelize.define('WishlistItem', {
 
 const SystemSetting = sequelize.define('SystemSetting', {
   id:           { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-  settingKey:   { type: DataTypes.STRING, allowNull: false, unique: true },
+  companyId:    { type: DataTypes.UUID, allowNull: false },
+  settingKey:   { type: DataTypes.STRING, allowNull: false },
   settingValue: { type: DataTypes.JSONB, allowNull: false },
-}, { tableName: 'system_settings', underscored: true });
+}, { 
+  tableName: 'system_settings', 
+  underscored: true,
+  indexes: [{ unique: true, fields: ['company_id', 'setting_key'] }]
+});
 
 const Review = sequelize.define('Review', {
   id:           { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId:    { type: DataTypes.UUID, allowNull: false },
   author:       { type: DataTypes.STRING, allowNull: false },
   text:         { type: DataTypes.TEXT, allowNull: false },
   date:         { type: DataTypes.STRING },
@@ -34,6 +42,7 @@ const Review = sequelize.define('Review', {
 
 const FaqItem = sequelize.define('FaqItem', {
   id:             { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId:      { type: DataTypes.UUID, allowNull: false },
   question:       { type: DataTypes.TEXT, allowNull: false },
   answer:         { type: DataTypes.TEXT, allowNull: false },
   collectionSlug: { type: DataTypes.STRING },

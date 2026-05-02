@@ -22,15 +22,16 @@ const MasterController = {
    */
   async getHeader(req, res) {
     try {
+      const cId = req.tenant.id;
       const collections = await Collection.findAll({
-        where: { isActive: true },
+        where: { isActive: true, companyId: cId },
         order: [['sortOrder', 'ASC']],
-        include: [{ model: Category, as: 'categories', where: { isActive: true }, required: false }],
+        include: [{ model: Category, as: 'categories', where: { isActive: true, companyId: cId }, required: false }],
       });
-      const styles  = await Style.findAll({ where: { isActive: true } });
-      const shapes  = await Shape.findAll({ where: { isActive: true } });
-      const metals  = await Metal.findAll({ where: { isActive: true } });
-      const types   = await ProductType.findAll({ where: { isActive: true } });
+      const styles  = await Style.findAll({ where: { isActive: true, companyId: cId } });
+      const shapes  = await Shape.findAll({ where: { isActive: true, companyId: cId } });
+      const metals  = await Metal.findAll({ where: { isActive: true, companyId: cId } });
+      const types   = await ProductType.findAll({ where: { isActive: true, companyId: cId } });
 
       res.json({ collections, styles, shapes, metals, types });
     } catch (err) {
@@ -55,11 +56,12 @@ const MasterController = {
    */
   async getFilters(req, res) {
     try {
+      const cId = req.tenant.id;
       const [styles, metals, shapes, priceGroups] = await Promise.all([
-        Style.findAll({ where: { isActive: true } }),
-        Metal.findAll({ where: { isActive: true } }),
-        Shape.findAll({ where: { isActive: true } }),
-        PriceGroup.findAll({ order: [['minPrice', 'ASC']] }),
+        Style.findAll({ where: { isActive: true, companyId: cId } }),
+        Metal.findAll({ where: { isActive: true, companyId: cId } }),
+        Shape.findAll({ where: { isActive: true, companyId: cId } }),
+        PriceGroup.findAll({ where: { companyId: cId }, order: [['minPrice', 'ASC']] }),
       ]);
       res.json({ styles, metals, shapes, priceGroups });
     } catch (err) {

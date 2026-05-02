@@ -17,6 +17,7 @@ const sequelize = require('../../config/database');
  */
 const Metal = sequelize.define('Metal', {
   id:           { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId:    { type: DataTypes.UUID, allowNull: false },
   name:         { type: DataTypes.STRING, allowNull: false },   // Yellow Gold
   code:         { type: DataTypes.STRING, allowNull: false, unique: true }, // yellow-gold
   hexColor:     { type: DataTypes.STRING, allowNull: true },    // #D4AF37

@@ -23,7 +23,7 @@ const CartController = {
   async getCart(req, res) {
     try {
       const items = await CartItem.findAll({
-        where: { userId: req.user.id },
+        where: { userId: req.user.id, companyId: req.tenant.id },
         include: [
           { model: Product, as: 'product', attributes: ['id', 'name', 'slug', 'basePrice'] },
           { model: Metal,   as: 'metal',   attributes: ['id', 'name', 'code', 'hexColor', 'metalPremium'] },
@@ -58,8 +58,8 @@ const CartController = {
     try {
       const { productId, metalId } = req.body;
       const [item, created] = await CartItem.findOrCreate({
-        where: { userId: req.user.id, productId, metalId },
-        defaults: { qty: 1 },
+        where: { userId: req.user.id, productId, metalId, companyId: req.tenant.id },
+        defaults: { qty: 1, companyId: req.tenant.id },
       });
       if (!created) await item.increment('qty', { by: 1 });
       res.json({ message: created ? 'Added to cart' : 'Quantity updated', item });
@@ -92,7 +92,7 @@ const CartController = {
    */
   async updateQty(req, res) {
     try {
-      const item = await CartItem.findOne({ where: { id: req.params.itemId, userId: req.user.id } });
+      const item = await CartItem.findOne({ where: { id: req.params.itemId, userId: req.user.id, companyId: req.tenant.id } });
       if (!item) return res.status(404).json({ message: 'Cart item not found' });
       if (req.body.qty < 1) {
         await item.destroy();
@@ -106,7 +106,7 @@ const CartController = {
   /** DELETE /cart/:itemId */
   async removeItem(req, res) {
     try {
-      await CartItem.destroy({ where: { id: req.params.itemId, userId: req.user.id } });
+      await CartItem.destroy({ where: { id: req.params.itemId, userId: req.user.id, companyId: req.tenant.id } });
       res.json({ message: 'Item removed' });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -114,7 +114,7 @@ const CartController = {
   /** DELETE /cart/clear */
   async clearCart(req, res) {
     try {
-      await CartItem.destroy({ where: { userId: req.user.id } });
+      await CartItem.destroy({ where: { userId: req.user.id, companyId: req.tenant.id } });
       res.json({ message: 'Cart cleared' });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },

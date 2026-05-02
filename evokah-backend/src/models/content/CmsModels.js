@@ -15,13 +15,14 @@ const sequelize = require('../../config/database');
  */
 const Translation = sequelize.define('Translation', {
   id:    { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId: { type: DataTypes.UUID, allowNull: false },
   lang:  { type: DataTypes.ENUM('en', 'fr'), allowNull: false },
   key:   { type: DataTypes.STRING, allowNull: false },   // e.g. 'nav_engagement'
   value: { type: DataTypes.TEXT, allowNull: false },     // e.g. 'Engagement' / 'Fiançailles'
 }, {
   tableName: 'translations',
   underscored: true,
-  indexes: [{ unique: true, fields: ['lang', 'key'] }],
+  indexes: [{ unique: true, fields: ['company_id', 'lang', 'key'] }],
 });
 
 /**
@@ -30,6 +31,7 @@ const Translation = sequelize.define('Translation', {
  */
 const StoryContent = sequelize.define('StoryContent', {
   id:        { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyId: { type: DataTypes.UUID, allowNull: false },
   type:      { type: DataTypes.ENUM('milestone', 'stat', 'value'), allowNull: false },
   year:      { type: DataTypes.STRING },          // for milestones: '2017'
   title:     { type: DataTypes.STRING, allowNull: false },

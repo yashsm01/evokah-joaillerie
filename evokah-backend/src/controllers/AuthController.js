@@ -37,12 +37,12 @@ const AuthController = {
   async register(req, res) {
     try {
       const { firstName, lastName, email, password } = req.body;
-      const exists = await User.findOne({ where: { email } });
+      const exists = await User.findOne({ where: { email, companyId: req.tenant.id } });
       if (exists) return res.status(400).json({ message: 'Email already registered' });
 
       const customerRole = await Role.findOne({ where: { name: 'CUSTOMER' } });
       const passwordHash = await bcrypt.hash(password, 12);
-      const user = await User.create({ firstName, lastName, email, passwordHash, roleId: customerRole.id });
+      const user = await User.create({ firstName, lastName, email, passwordHash, roleId: customerRole.id, companyId: req.tenant.id });
       res.status(201).json({ message: 'Registered successfully', userId: user.id });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -86,7 +86,7 @@ const AuthController = {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ where: { email }, include: [{ model: Role, as: 'role' }] });
+      const user = await User.findOne({ where: { email, companyId: req.tenant.id }, include: [{ model: Role, as: 'role' }] });
       if (!user) return res.status(401).json({ message: 'Invalid email or password' });
 
       const valid = await bcrypt.compare(password, user.passwordHash);
@@ -117,7 +117,8 @@ const AuthController = {
    */
   async me(req, res) {
     try {
-      const user = await User.findByPk(req.user.id, {
+      const user = await User.findOne({
+        where: { id: req.user.id, companyId: req.tenant.id },
         attributes: { exclude: ['passwordHash'] },
         include: [{ model: Role, as: 'role' }]
       });

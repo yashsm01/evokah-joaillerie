@@ -24,7 +24,7 @@ const SettingsController = {
    */
   async getTheme(req, res) {
     try {
-      const row = await SystemSetting.findOne({ where: { settingKey: 'GLOBAL_THEME' } });
+      const row = await SystemSetting.findOne({ where: { settingKey: 'GLOBAL_THEME', companyId: req.tenant.id } });
       res.json(row ? row.settingValue : { active: 'ocean' });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -49,7 +49,7 @@ const SettingsController = {
    */
   async updateTheme(req, res) {
     try {
-      await SystemSetting.upsert({ settingKey: 'GLOBAL_THEME', settingValue: req.body });
+      await SystemSetting.upsert({ settingKey: 'GLOBAL_THEME', settingValue: req.body, companyId: req.tenant.id });
       res.json({ message: 'Theme updated', theme: req.body });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -69,7 +69,7 @@ const SettingsController = {
    */
   async getAnnouncement(req, res) {
     try {
-      const row = await SystemSetting.findOne({ where: { settingKey: 'ANNOUNCEMENT' } });
+      const row = await SystemSetting.findOne({ where: { settingKey: 'ANNOUNCEMENT', companyId: req.tenant.id } });
       res.json(row ? row.settingValue : { en: '', fr: '' });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },
@@ -93,7 +93,7 @@ const SettingsController = {
    */
   async updateAnnouncement(req, res) {
     try {
-      await SystemSetting.upsert({ settingKey: 'ANNOUNCEMENT', settingValue: req.body });
+      await SystemSetting.upsert({ settingKey: 'ANNOUNCEMENT', settingValue: req.body, companyId: req.tenant.id });
       res.json({ message: 'Announcement updated' });
     } catch (err) { res.status(500).json({ message: err.message }); }
   },

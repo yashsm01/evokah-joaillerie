@@ -3,7 +3,7 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env'
 require('../models/index'); 
 const sequelize = require('../config/database');
 const { 
-  Product, ProductMedia, Collection, ProductType, Category, 
+  Company, Product, ProductMedia, Collection, ProductType, Category, 
   Style, Metal, Shape, PriceGroup, ProductMetal, ProductShape 
 } = require('../models');
 
@@ -178,9 +178,17 @@ async function seed() {
     console.log('🌱 Seeding products...');
 
     // Load all masters into memory for quick lookup
+    const company = await Company.findOne({ where: { slug: 'evokah' } });
+    const cId = company.id;
+
     const [collections, types, categories, styles, priceGroups, metals, shapes] = await Promise.all([
-      Collection.findAll(), ProductType.findAll(), Category.findAll(),
-      Style.findAll(), PriceGroup.findAll(), Metal.findAll(), Shape.findAll()
+      Collection.findAll({ where: { companyId: cId } }), 
+      ProductType.findAll({ where: { companyId: cId } }), 
+      Category.findAll({ where: { companyId: cId } }),
+      Style.findAll({ where: { companyId: cId } }), 
+      PriceGroup.findAll({ where: { companyId: cId } }), 
+      Metal.findAll({ where: { companyId: cId } }), 
+      Shape.findAll({ where: { companyId: cId } })
     ]);
 
     for (const p of MOCK_PRODUCTS) {
@@ -196,7 +204,7 @@ async function seed() {
       }
 
       const [product] = await Product.findOrCreate({
-        where: { slug: p.slug },
+        where: { slug: p.slug, companyId: cId },
         defaults: {
           name: p.name,
           description: p.description,
