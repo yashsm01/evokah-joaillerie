@@ -31,4 +31,9 @@ export class ProductService {
       .get<Product>(`${this.apiUrl}/${id}`)
       .pipe(catchError(() => of(undefined)));
   }
+
+  /** Synchronous helpers for product detail (mock-only) */
+  getAll(): Product[] { return MOCK_PRODUCTS; }
+  getBySlug(slug: string): Product | undefined { return MOCK_PRODUCTS.find(p => p.slug === slug); }
+  getById(id: number): Product | undefined { return MOCK_PRODUCTS.find(p => p.id === id); }
 }

@@ -3,13 +3,16 @@ export interface Product {
   name: string;
   category: string;
   style: ProductStyle;
-  type: ProductType; // New field for top-level category
+  type: ProductType;
   tag?: string;
   basePrice: number;
   metals: MetalType[];
   shapes: string[];
   img: string;
-  metalImages?: Partial<Record<MetalType, string>>;  // per-metal image overrides
+  images?: string[];                                    // gallery images
+  metalImages?: Partial<Record<MetalType, string>>;     // per-metal image overrides
+  metalGalleries?: Partial<Record<MetalType, string[]>>;// per-metal gallery arrays
+  modelUrl?: string;                                    // .glb 3D model URL
   priceGroup: PriceGroup;
   collection: 'engagement' | 'wedding' | 'all';
   description?: string;

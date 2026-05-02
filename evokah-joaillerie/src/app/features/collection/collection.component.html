@@ -1,6 +1,7 @@
 <!-- ░░ HERO ░░ -->
 <section class="hero">
-  <div class="hero-bg">
+  <div class="hero-bg" [style.backgroundImage]="heroBg() ? 'url(' + heroBg() + ')' : ''" 
+       [style.backgroundSize]="'cover'" [style.backgroundPosition]="'center'">
     <div class="hero-overlay"></div>
     <div class="hero-diamonds">
       <span class="deco-diamond d1">◆</span>
@@ -10,21 +11,23 @@
     </div>
   </div>
   <div class="hero-content">
-    <p class="hero-eyebrow">The Evokah Collection</p>
-    <h1 class="hero-title" *ngIf="collectionType() === 'engagement'">Engagement<br /><em>Rings</em></h1>
-    <h1 class="hero-title" *ngIf="collectionType() === 'wedding'">Wedding<br /><em>Bands</em></h1>
-    <h1 class="hero-title" *ngIf="collectionType() === 'all'">Fine<br /><em>Jewellery</em></h1>
-    <p class="hero-desc" *ngIf="collectionType() === 'engagement'">Conceived as personal signatures — emotion shaped through intention, proportion, and ethical artisanship.</p>
-    <p class="hero-desc" *ngIf="collectionType() === 'wedding'">Symbolize your forever with handcrafted bands designed for comfort, durability, and timeless elegance.</p>
-    <p class="hero-desc" *ngIf="collectionType() === 'all'">Explore our complete collection of handcrafted rings, necklaces, and earrings, designed for the modern connoisseur.</p>
-    <div class="hero-ctas">
-      <a href="#collection" class="btn btn-primary">Shop the Collection</a>
-      <a href="#consult" class="btn btn-ghost">Book a Consultation</a>
-    </div>
-    <div class="hero-badges">
-      <div class="badge"><span class="badge-icon">♻</span><span>Recycled Gold</span></div>
-      <div class="badge"><span class="badge-icon">◈</span><span>Ethical Diamonds</span></div>
-      <div class="badge"><span class="badge-icon">✦</span><span>Handcrafted</span></div>
+    <div class="hero-text-wrap">
+      <p class="hero-eyebrow">The Evokah Collection</p>
+      <h1 class="hero-title" *ngIf="collectionType() === 'engagement'">Engagement<br /><em>Rings</em></h1>
+      <h1 class="hero-title" *ngIf="collectionType() === 'wedding'">Wedding<br /><em>Bands</em></h1>
+      <h1 class="hero-title" *ngIf="collectionType() === 'all'">Fine<br /><em>Jewellery</em></h1>
+      <p class="hero-desc" *ngIf="collectionType() === 'engagement'">Conceived as personal signatures — emotion shaped through intention, proportion, and ethical artisanship.</p>
+      <p class="hero-desc" *ngIf="collectionType() === 'wedding'">Symbolize your forever with handcrafted bands designed for comfort, durability, and timeless elegance.</p>
+      <p class="hero-desc" *ngIf="collectionType() === 'all'">Explore our complete collection of handcrafted rings, necklaces, and earrings, designed for the modern connoisseur.</p>
+      <div class="hero-ctas">
+        <a href="#collection" class="btn btn-primary">Shop the Collection</a>
+        <a href="#consult" class="btn btn-ghost">Book a Consultation</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge"><span class="badge-icon">♻</span><span>Recycled Gold</span></div>
+        <div class="badge"><span class="badge-icon">◈</span><span>Ethical Diamonds</span></div>
+        <div class="badge"><span class="badge-icon">✦</span><span>Handcrafted</span></div>
+      </div>
     </div>
   </div>
   <div class="hero-scroll" (click)="scrollTo('collection')">

@@ -1,0 +1,228 @@
+<!-- ── BREADCRUMB ──────────────────────────────────── -->
+<nav class="breadcrumb" *ngIf="product() as p">
+  <a routerLink="/">Home</a>
+  <span class="sep">&raquo;</span>
+  <a [routerLink]="['/' + p.collection]">{{ p.collection | titlecase }}</a>
+  <span class="sep">&raquo;</span>
+  <span class="current">{{ p.name }}</span>
+</nav>
+
+<section class="pd-layout container" *ngIf="product() as p; else loading">
+
+  <!-- ═══════════════════ LEFT — GALLERY ═══════════════════ -->
+  <div class="pd-gallery">
+
+    <!-- Main viewer -->
+    <div class="main-viewer">
+      <!-- 3D Model View -->
+      <ng-container *ngIf="viewMode() === 'model' && p.modelUrl; else imgView">
+        <model-viewer
+          [src]="p.modelUrl"
+          alt="{{ p.name }} 3D Model"
+          camera-controls
+          shadow-intensity="1"
+          exposure="0.8"
+          class="model-viewer-el">
+        </model-viewer>
+        <div class="model-badge">
+          <span>◈ 360° View</span>
+        </div>
+      </ng-container>
+
+      <!-- Image View -->
+      <ng-template #imgView>
+        <img [src]="mainImage()" [alt]="p.name" class="main-img" />
+        <span class="img-tag" *ngIf="p.tag">{{ p.tag }}</span>
+      </ng-template>
+
+      <!-- View Toggle (only if model available) -->
+      <div class="view-toggle" *ngIf="p.modelUrl">
+        <button [class.active]="viewMode() === 'image'" (click)="viewMode.set('image')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21,15 16,10 5,21"/>
+          </svg>
+          Photo
+        </button>
+        <button [class.active]="viewMode() === 'model'" (click)="viewMode.set('model')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          3D View
+        </button>
+      </div>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div class="thumb-strip">
+      <button
+        *ngFor="let img of gallery()"
+        class="thumb-btn"
+        [class.active]="mainImage() === img"
+        (click)="selectGalleryImage(img)">
+        <img [src]="img" [alt]="p.name + ' thumbnail'" />
+      </button>
+      <!-- 3D thumb -->
+      <button
+        *ngIf="p.modelUrl"
+        class="thumb-btn thumb-3d"
+        [class.active]="viewMode() === 'model'"
+        (click)="viewMode.set('model')">
+        <span class="model-icon">◈</span>
+        <span class="label-3d">3D</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ RIGHT — INFO ═══════════════════ -->
+  <div class="pd-info">
+
+    <!-- Header -->
+    <div class="pd-header">
+      <p class="pd-category">{{ p.category }}</p>
+      <h1 class="pd-title">{{ p.name }}</h1>
+      <p class="pd-price">${{ displayPrice() | number }}</p>
+      <p class="pd-subtitle">Includes free shipping &amp; certificate of authenticity</p>
+    </div>
+
+    <!-- Metal selector -->
+    <div class="option-block">
+      <div class="option-label">
+        <span>Metal</span>
+        <strong>{{ selectedMetal() ? metalLabel(selectedMetal()!) : '' }}</strong>
+      </div>
+      <div class="metal-swatches">
+        <button
+          *ngFor="let m of p.metals"
+          class="swatch-btn"
+          [class.active]="selectedMetal() === m"
+          [attr.data-metal]="m"
+          [title]="metalLabel(m)"
+          (click)="selectMetal(m)">
+        </button>
+      </div>
+    </div>
+
+    <!-- Shape selector -->
+    <div class="option-block" *ngIf="p.shapes.length > 1">
+      <div class="option-label">
+        <span>Diamond Shape</span>
+        <strong>{{ selectedShape() }}</strong>
+      </div>
+      <div class="shape-pills">
+        <button
+          *ngFor="let s of p.shapes"
+          class="shape-pill"
+          [class.active]="selectedShape() === s"
+          (click)="selectedShape.set(s)">
+          {{ s }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Ring size -->
+    <div class="option-block" *ngIf="p.type === 'ring'">
+      <div class="option-label">
+        <span>Ring Size</span>
+        <a href="#" class="size-guide-link">Size Guide ↗</a>
+      </div>
+      <div class="size-grid">
+        <button
+          *ngFor="let s of ['4','4.5','5','5.5','6','6.5','7','7.5','8','8.5','9','9.5','10']"
+          class="size-btn"
+          [class.active]="ringSize() === s"
+          (click)="ringSize.set(s)">
+          {{ s }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Qty + Cart -->
+    <div class="cta-row">
+      <div class="qty-selector">
+        <button class="qty-btn" (click)="changeQty(-1)">−</button>
+        <span class="qty-val">{{ qty() }}</span>
+        <button class="qty-btn" (click)="changeQty(1)">+</button>
+      </div>
+      <button class="btn-add-cart" [class.added]="addedToCart()" (click)="addToCart()">
+        <span *ngIf="!addedToCart()">Add to Cart</span>
+        <span *ngIf="addedToCart()">✓ Added</span>
+      </button>
+      <button class="btn-wishlist" [class.active]="isWishlisted()" (click)="toggleWishlist()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="trust-row">
+      <div class="trust-item"><span>♻</span><span>Recycled Gold</span></div>
+      <div class="trust-item"><span>◈</span><span>Ethical Diamonds</span></div>
+      <div class="trust-item"><span>↩</span><span>30-Day Returns</span></div>
+      <div class="trust-item"><span>✦</span><span>Handcrafted</span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-nav">
+      <button [class.active]="activeTab() === 'desc'" (click)="activeTab.set('desc')">Description</button>
+      <button [class.active]="activeTab() === 'details'" (click)="activeTab.set('details')">Details</button>
+      <button [class.active]="activeTab() === 'care'" (click)="activeTab.set('care')">Care</button>
+    </div>
+    <div class="tab-body">
+      <div *ngIf="activeTab() === 'desc'" class="tab-content fade-in">
+        <p>{{ p.description }}</p>
+      </div>
+      <div *ngIf="activeTab() === 'details'" class="tab-content fade-in">
+        <ul class="detail-list">
+          <li><strong>Category</strong> {{ p.category }}</li>
+          <li><strong>Style</strong> {{ p.style | titlecase }}</li>
+          <li><strong>Metal</strong> {{ selectedMetal() ? metalLabel(selectedMetal()!) : '—' }}</li>
+          <li *ngIf="p.type === 'ring'"><strong>Shape</strong> {{ selectedShape() }}</li>
+          <li><strong>Collection</strong> {{ p.collection | titlecase }}</li>
+          <li *ngIf="p.modelUrl"><strong>3D Preview</strong> Available</li>
+        </ul>
+      </div>
+      <div *ngIf="activeTab() === 'care'" class="tab-content fade-in">
+        <ul class="detail-list">
+          <li>Store in the Evokah pouch when not worn.</li>
+          <li>Remove before swimming, bathing, or exercising.</li>
+          <li>Polish gently with the included microfibre cloth.</li>
+          <li>Annual professional cleaning recommended.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════ RELATED PRODUCTS ═══════════════════ -->
+<section class="related-section container" *ngIf="relatedProducts.length > 0">
+  <h2 class="section-heading">You May Also <em>Love</em></h2>
+  <div class="related-grid">
+    <div class="related-card" *ngFor="let r of relatedProducts" (click)="navigateTo(r.slug)">
+      <div class="related-img">
+        <img [src]="r.img" [alt]="r.name" />
+        <span class="related-tag" *ngIf="r.tag">{{ r.tag }}</span>
+      </div>
+      <div class="related-info">
+        <p class="related-name">{{ r.name }}</p>
+        <p class="related-price">${{ r.basePrice | number }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Loading skeleton -->
+<ng-template #loading>
+  <div class="loading-state container">
+    <div class="skeleton-gallery"></div>
+    <div class="skeleton-info">
+      <div class="sk-line sk-w60"></div>
+      <div class="sk-line sk-w90"></div>
+      <div class="sk-line sk-w40"></div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="toast" [class.visible]="toastVisible()">{{ toastMsg() }}</div>

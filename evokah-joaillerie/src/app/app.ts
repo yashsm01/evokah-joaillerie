@@ -26,7 +26,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     // ── 1. Start smooth scroller ──────────────────────────
-    this.scrollSvc.init();
+    // this.scrollSvc.init(); // Disabled per user request
 
     // ── 2. Apply theme for initial load ───────────────────
     this.themeSvc.applyForRoute(this.router.url);

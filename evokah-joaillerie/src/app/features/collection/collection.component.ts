@@ -4,35 +4,36 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { WishlistService } from '../../core/services/wishlist.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { Product, ProductFilters, ProductStyle, MetalType, PriceGroup, SortOption } from '../../core/models/product.model';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductModalComponent } from './components/product-modal/product-modal.component';
 
 const ENGAGEMENT_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
   { label: 'All Rings', value: 'all' },
-  { label: 'Solitaire',  value: 'solitaire' },
-  { label: 'Halo',       value: 'halo' },
-  { label: 'Pavé',       value: 'pave' },
-  { label: 'Love Knot',  value: 'knot' },
-  { label: 'Cluster',    value: 'cluster' },
+  { label: 'Solitaire', value: 'solitaire' },
+  { label: 'Halo', value: 'halo' },
+  { label: 'Pavé', value: 'pave' },
+  { label: 'Love Knot', value: 'knot' },
+  { label: 'Cluster', value: 'cluster' },
 ];
 
 const WEDDING_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
-  { label: 'All Bands',  value: 'all' },
-  { label: 'Plain',      value: 'plain' },
-  { label: 'Eternity',   value: 'eternity' },
-  { label: 'Patterned',  value: 'patterned' },
-  { label: 'Contour',    value: 'contour' },
-  { label: 'Pavé',       value: 'pave' },
+  { label: 'All Bands', value: 'all' },
+  { label: 'Plain', value: 'plain' },
+  { label: 'Eternity', value: 'eternity' },
+  { label: 'Patterned', value: 'patterned' },
+  { label: 'Contour', value: 'contour' },
+  { label: 'Pavé', value: 'pave' },
 ];
 
 const ALL_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
   { label: 'All Styles', value: 'all' },
-  { label: 'Solitaire',  value: 'solitaire' },
-  { label: 'Halo',       value: 'halo' },
-  { label: 'Pendant',    value: 'pendant' },
-  { label: 'Studs',      value: 'stud' },
-  { label: 'Hoops',      value: 'hoop' },
+  { label: 'Solitaire', value: 'solitaire' },
+  { label: 'Halo', value: 'halo' },
+  { label: 'Pendant', value: 'pendant' },
+  { label: 'Studs', value: 'stud' },
+  { label: 'Hoops', value: 'hoop' },
 ];
 
 @Component({
@@ -45,10 +46,17 @@ const ALL_STYLES: { label: string; value: ProductStyle | 'all' }[] = [
 export class CollectionComponent implements OnInit {
   private svc = inject(ProductService);
   private wishSvc = inject(WishlistService);
+  public themeSvc = inject(ThemeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
   collectionType = signal<'engagement' | 'wedding' | 'all'>('engagement');
+  heroBg = computed(() => {
+    const theme = this.themeSvc.current();
+    if (theme === 'ocean') return 'https://images.hinex.store/1777662090128-home_First_Oceans.png';
+    if (theme === 'ivory') return 'https://images.hinex.store/1777662663175-home_First_ivory.png';
+    return ''; // fallback to CSS gradient
+  });
   allProducts: Product[] = [];
   selectedProduct: Product | null = null;
   isListMode = false;
@@ -86,9 +94,9 @@ export class CollectionComponent implements OnInit {
       if (f.priceGroup !== 'all' && p.priceGroup !== f.priceGroup) return false;
       return true;
     });
-    if (f.sort === 'price-asc')  list = [...list].sort((a,b) => a.basePrice - b.basePrice);
-    if (f.sort === 'price-desc') list = [...list].sort((a,b) => b.basePrice - a.basePrice);
-    if (f.sort === 'name-asc')   list = [...list].sort((a,b) => a.name.localeCompare(b.name));
+    if (f.sort === 'price-asc') list = [...list].sort((a, b) => a.basePrice - b.basePrice);
+    if (f.sort === 'price-desc') list = [...list].sort((a, b) => b.basePrice - a.basePrice);
+    if (f.sort === 'name-asc') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     return list;
   });
 
@@ -139,8 +147,8 @@ export class CollectionComponent implements OnInit {
     this.filters.set({ style: 'all', metal: 'all', priceGroup: 'all', type: 'all', sort: 'featured' });
   }
 
-  openModal(p: Product)  { this.selectedProduct = p; document.body.style.overflow = 'hidden'; }
-  closeModal()            { this.selectedProduct = null; document.body.style.overflow = ''; }
+  openModal(p: Product) { this.selectedProduct = p; document.body.style.overflow = 'hidden'; }
+  closeModal() { this.selectedProduct = null; document.body.style.overflow = ''; }
 
   addToWishlist(p: Product) {
     this.wishSvc.toggle({
@@ -166,7 +174,7 @@ export class CollectionComponent implements OnInit {
   toggleView(list: boolean) { this.isListMode = list; }
 
   scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView();
   }
 
   trackById(_: number, p: Product): number { return p.id; }

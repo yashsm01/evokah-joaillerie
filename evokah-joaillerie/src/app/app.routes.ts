@@ -3,6 +3,9 @@ import { Routes } from '@angular/router';
 const collection = () =>
   import('./features/collection/collection.component').then(m => m.CollectionComponent);
 
+const productDetail = () =>
+  import('./features/product-detail/product-detail.component').then(m => m.ProductDetailComponent);
+
 const cart = () =>
   import('./features/cart/cart.component').then(m => m.CartComponent);
 
@@ -18,7 +21,8 @@ export const routes: Routes = [
   { path: ':theme/story',      loadComponent: story      },
   { path: ':theme/wishlist',   loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: ':theme/shop',       loadComponent: collection },
-  { path: ':theme/home',       loadComponent: collection },  // home with theme
+  { path: ':theme/home',       loadComponent: collection },
+  { path: ':theme/product/:slug', loadComponent: productDetail },
 
   // ── Standard routes (no theme prefix) ───────────────────────
   { path: '',           loadComponent: collection },
@@ -28,6 +32,7 @@ export const routes: Routes = [
   { path: 'story',      loadComponent: story      },
   { path: 'wishlist',   loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: 'shop',       loadComponent: collection },
+  { path: 'product/:slug', loadComponent: productDetail },
 
   { path: '**', redirectTo: '' },
 ];

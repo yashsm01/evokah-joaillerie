@@ -1,13 +1,28 @@
-<div class="product-card" (click)="quickView.emit(product)" tabindex="0" role="button" [attr.aria-label]="product.name">
+<div class="product-card" (click)="navigateToDetail()" tabindex="0" role="button" [attr.aria-label]="product.name">
   <div class="card-image-wrap">
     <span class="card-badge" *ngIf="product.tag">{{ product.tag }}</span>
+    <span class="card-badge card-badge-3d" *ngIf="product.modelUrl">◈ 3D</span>
     <button class="card-wishlist" (click)="onWishlist($event)" aria-label="Add to wishlist">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
       </svg>
     </button>
-    <img [src]="product.img" [alt]="product.name" loading="lazy"
-         (error)="$any($event.target).src='https://placehold.co/400x400/F7E7CE/A9A9A9?text=Ring'" />
+    <!-- 3D Model View if available, else static Image -->
+    <ng-container *ngIf="product.modelUrl; else staticImage">
+      <model-viewer
+        [src]="product.modelUrl"
+        [alt]="product.name"
+        camera-controls
+        shadow-intensity="1"
+        exposure="0.8"
+        class="card-model-viewer">
+      </model-viewer>
+    </ng-container>
+
+    <ng-template #staticImage>
+      <img [src]="product.img" [alt]="product.name" loading="lazy"
+           (error)="$any($event.target).src='https://placehold.co/400x400/F7E7CE/A9A9A9?text=Ring'" />
+    </ng-template>
     <div class="card-swatches">
       <span *ngFor="let m of product.metals" class="swatch {{ m }}" [title]="metalLabels[m]"></span>
     </div>
