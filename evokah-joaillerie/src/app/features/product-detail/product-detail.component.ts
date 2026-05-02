@@ -5,12 +5,15 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { WishlistService } from '../../core/services/wishlist.service';
+import { CartService } from '../../core/services/cart.service';
 import { Product, MetalType, METAL_LABELS } from '../../core/models/product.model';
+
+import { ProductCardComponent } from '../collection/components/product-card/product-card.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProductCardComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],   // allows <model-viewer>
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
@@ -18,6 +21,7 @@ import { Product, MetalType, METAL_LABELS } from '../../core/models/product.mode
 export class ProductDetailComponent implements OnInit {
   private svc    = inject(ProductService);
   private wish   = inject(WishlistService);
+  private cart   = inject(CartService);
   private route  = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -76,12 +80,13 @@ export class ProductDetailComponent implements OnInit {
     this.route.paramMap.subscribe(pm => {
       const slug = pm.get('slug');
       if (!slug) { this.router.navigate(['/']); return; }
-      const p = this.svc.getBySlug(slug);
-      if (!p) { this.router.navigate(['/']); return; }
-      this.product.set(p);
-      this.selectedMetal.set(p.metals[0] ?? null);
-      this.selectedShape.set(p.shapes[0] ?? '');
-      this.selectedImage.set(p.img);
+      this.svc.getBySlug(slug).subscribe(p => {
+        if (!p) { this.router.navigate(['/']); return; }
+        this.product.set(p);
+        this.selectedMetal.set(p.metals[0] ?? null);
+        this.selectedShape.set(p.shapes[0] ?? '');
+        this.selectedImage.set(p.img);
+      });
     });
   }
 
@@ -93,7 +98,28 @@ export class ProductDetailComponent implements OnInit {
     else this.selectedImage.set(p?.img ?? '');
   }
 
-  selectGalleryImage(img: string) { this.selectedImage.set(img); }
+  selectGalleryImage(img: string) { 
+    this.selectedImage.set(img); 
+    this.viewMode.set('image');
+  }
+
+  nextImage() {
+    const images = this.gallery();
+    if (images.length <= 1) return;
+    const current = this.mainImage();
+    const idx = images.indexOf(current);
+    const nextIdx = (idx + 1) % images.length;
+    this.selectGalleryImage(images[nextIdx]);
+  }
+
+  prevImage() {
+    const images = this.gallery();
+    if (images.length <= 1) return;
+    const current = this.mainImage();
+    const idx = images.indexOf(current);
+    const prevIdx = (idx - 1 + images.length) % images.length;
+    this.selectGalleryImage(images[prevIdx]);
+  }
 
   toggleWishlist() {
     const p = this.product();
@@ -102,6 +128,7 @@ export class ProductDetailComponent implements OnInit {
       id: p.id,
       name: p.name,
       img: this.mainImage(),
+      images: p.images,
       basePrice: this.displayPrice(),
       category: p.category,
       tag: p.tag,
@@ -112,6 +139,20 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart() {
+    const p = this.product();
+    if (!p) return;
+    
+    this.cart.addItem({
+      id: p.id,
+      name: p.name,
+      price: this.displayPrice(),
+      img: this.mainImage(),
+      images: p.images,
+      metal: this.selectedMetal() ? this.metalLabel(this.selectedMetal()!) : '',
+      category: p.category,
+      qty: this.qty()
+    });
+
     this.addedToCart.set(true);
     this.showToast('Added to cart ✓');
     setTimeout(() => this.addedToCart.set(false), 2000);

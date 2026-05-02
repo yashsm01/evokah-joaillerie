@@ -18,6 +18,28 @@ export class ProductCardComponent {
 
   private router = inject(Router);
   metalLabels = METAL_LABELS;
+  currentImageIndex = 0;
+
+  get currentImage(): string {
+    if (this.product.images?.length) {
+      return this.product.images[this.currentImageIndex];
+    }
+    return this.product.img;
+  }
+
+  nextImage(e: Event): void {
+    e.stopPropagation();
+    if (this.product.images?.length) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.product.images.length;
+    }
+  }
+
+  prevImage(e: Event): void {
+    e.stopPropagation();
+    if (this.product.images?.length) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.product.images.length) % this.product.images.length;
+    }
+  }
 
   navigateToDetail(): void {
     if (this.product.slug) {

@@ -111,6 +111,46 @@
   }
 }
 
+.pd-main-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .pd-slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all .3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    &:hover {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+
+    &.prev { left: 20px; }
+    &.next { right: 20px; }
+  }
+
+  &:hover .pd-slider-arrow {
+    opacity: 1;
+  }
+}
+
 model-viewer.model-viewer-el {
   width: 100%;
   height: 100%;
@@ -590,64 +630,7 @@ model-viewer.model-viewer-el {
   gap: 20px;
 }
 
-.related-card {
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all .35s ease;
-  background: var(--bg-card);
 
-  &:hover {
-    border-color: var(--gold);
-    box-shadow: 0 12px 30px rgba(0,0,0,.08), 0 0 12px var(--gold-dim);
-    transform: translateY(-4px);
-  }
-
-  .related-img {
-    position: relative;
-    aspect-ratio: 1;
-    overflow: hidden;
-    background: var(--champagne);
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .5s ease;
-    }
-
-    .related-tag {
-      position: absolute;
-      top: 10px; left: 10px;
-      font-size: .52rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      padding: 4px 8px;
-      background: var(--gold);
-      color: var(--bg-page);
-      font-weight: 600;
-    }
-  }
-
-  &:hover .related-img img { transform: scale(1.08); }
-
-  .related-info {
-    padding: 14px 16px 18px;
-
-    .related-name {
-      font-size: .78rem;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-      line-height: 1.4;
-      font-weight: 400;
-    }
-
-    .related-price {
-      font-size: .9rem;
-      font-weight: 600;
-      color: var(--gold);
-    }
-  }
-}
 
 /* ── LOADING SKELETON ────────────────────────── */
 .loading-state {

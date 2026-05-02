@@ -56,6 +56,7 @@ export class ProductModalComponent {
       img:      this.activeImage(),
       metal:    METAL_LABELS[metal] ?? metal,
       category: this._product.category,
+      images:   this._product.images,
     });
     this.toast.emit(`✓ Added to cart`);
     this.closed.emit();

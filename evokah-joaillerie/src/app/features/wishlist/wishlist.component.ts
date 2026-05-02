@@ -15,6 +15,28 @@ export class WishlistComponent {
   wishSvc = inject(WishlistService);
   cartSvc = inject(CartService);
 
+  imageIndexes: Record<string | number, number> = {};
+
+  getItemImage(item: any): string {
+    const idx = this.imageIndexes[item.id] || 0;
+    if (item.images?.length) return item.images[idx];
+    return item.img;
+  }
+
+  nextImage(item: any, e: Event): void {
+    e.stopPropagation();
+    if (!item.images?.length) return;
+    const current = this.imageIndexes[item.id] || 0;
+    this.imageIndexes[item.id] = (current + 1) % item.images.length;
+  }
+
+  prevImage(item: any, e: Event): void {
+    e.stopPropagation();
+    if (!item.images?.length) return;
+    const current = this.imageIndexes[item.id] || 0;
+    this.imageIndexes[item.id] = (current - 1 + item.images.length) % item.images.length;
+  }
+
   toastMsg     = '';
   toastVisible = false;
 
@@ -31,7 +53,7 @@ export class WishlistComponent {
     this.showToast(`${item.name} moved to cart`);
   }
 
-  remove(id: number): void {
+  remove(id: string | number): void {
     this.wishSvc.remove(id);
   }
 

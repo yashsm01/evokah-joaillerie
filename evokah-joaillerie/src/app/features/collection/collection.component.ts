@@ -156,6 +156,7 @@ export class CollectionComponent implements OnInit {
       name: p.name,
       basePrice: p.basePrice,
       img: p.img,
+      images: p.images,
       category: p.category,
       tag: p.tag,
       metal: p.metals[0], // default to first metal
@@ -177,7 +178,7 @@ export class CollectionComponent implements OnInit {
     document.getElementById(id)?.scrollIntoView();
   }
 
-  trackById(_: number, p: Product): number { return p.id; }
+  trackById(_: number, p: Product): string | number { return p.id; }
 
   // FAQ
   openFaq: number | null = null;

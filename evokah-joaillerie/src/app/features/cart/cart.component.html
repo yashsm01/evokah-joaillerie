@@ -31,8 +31,19 @@
       <div class="cart-items">
         <div class="cart-item" *ngFor="let item of cart.items()">
           <div class="item-img">
-            <img [src]="item.img" [alt]="item.name"
-                 (error)="$any($event.target).src='https://placehold.co/200x200/2E001A/D4AF37?text=Ring'" />
+            <div class="card-slider">
+              <img [src]="getItemImage(item)" [alt]="item.name"
+                   (error)="$any($event.target).src='https://placehold.co/200x200/2E001A/D4AF37?text=Ring'" />
+              
+              <ng-container *ngIf="item.images && item.images.length > 1">
+                <button class="slider-arrow prev" (click)="prevImage(item, $event)" aria-label="Previous Image">‹</button>
+                <button class="slider-arrow next" (click)="nextImage(item, $event)" aria-label="Next Image">›</button>
+                <div class="slider-dots">
+                  <span *ngFor="let img of item.images; let i = index" 
+                        class="dot" [class.active]="i === (imageIndexes[item.id] || 0)"></span>
+                </div>
+              </ng-container>
+            </div>
           </div>
           <div class="item-info">
             <p class="item-category">{{ item.category }}</p>

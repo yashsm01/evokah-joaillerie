@@ -20,8 +20,19 @@
     </ng-container>
 
     <ng-template #staticImage>
-      <img [src]="product.img" [alt]="product.name" loading="lazy"
-           (error)="$any($event.target).src='https://placehold.co/400x400/F7E7CE/A9A9A9?text=Ring'" />
+      <div class="card-slider">
+        <img [src]="currentImage" [alt]="product.name" loading="lazy"
+             (error)="$any($event.target).src='https://placehold.co/400x400/F7E7CE/A9A9A9?text=Ring'" />
+        
+        <ng-container *ngIf="product.images && product.images.length > 1">
+          <button class="slider-arrow prev" (click)="prevImage($event)" aria-label="Previous Image">‹</button>
+          <button class="slider-arrow next" (click)="nextImage($event)" aria-label="Next Image">›</button>
+          <div class="slider-dots">
+            <span *ngFor="let img of product.images; let i = index" 
+                  class="dot" [class.active]="i === currentImageIndex"></span>
+          </div>
+        </ng-container>
+      </div>
     </ng-template>
     <div class="card-swatches">
       <span *ngFor="let m of product.metals" class="swatch {{ m }}" [title]="metalLabels[m]"></span>

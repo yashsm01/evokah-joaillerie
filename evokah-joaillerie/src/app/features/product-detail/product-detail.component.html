@@ -31,7 +31,14 @@
 
       <!-- Image View -->
       <ng-template #imgView>
-        <img [src]="mainImage()" [alt]="p.name" class="main-img" />
+        <div class="pd-main-slider">
+          <img [src]="mainImage()" [alt]="p.name" class="main-img" />
+          
+          <ng-container *ngIf="gallery().length > 1">
+            <button class="pd-slider-arrow prev" (click)="prevImage()" aria-label="Previous image">‹</button>
+            <button class="pd-slider-arrow next" (click)="nextImage()" aria-label="Next image">›</button>
+          </ng-container>
+        </div>
         <span class="img-tag" *ngIf="p.tag">{{ p.tag }}</span>
       </ng-template>
 
@@ -200,16 +207,10 @@
 <section class="related-section container" *ngIf="relatedProducts.length > 0">
   <h2 class="section-heading">You May Also <em>Love</em></h2>
   <div class="related-grid">
-    <div class="related-card" *ngFor="let r of relatedProducts" (click)="navigateTo(r.slug)">
-      <div class="related-img">
-        <img [src]="r.img" [alt]="r.name" />
-        <span class="related-tag" *ngIf="r.tag">{{ r.tag }}</span>
-      </div>
-      <div class="related-info">
-        <p class="related-name">{{ r.name }}</p>
-        <p class="related-price">${{ r.basePrice | number }}</p>
-      </div>
-    </div>
+    <app-product-card 
+      *ngFor="let r of relatedProducts" 
+      [product]="r">
+    </app-product-card>
   </div>
 </section>
 

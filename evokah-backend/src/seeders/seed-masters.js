@@ -12,7 +12,7 @@ async function seed() {
   // ── Companies ───────────────────────────────────────────────
   const [company] = await Company.findOrCreate({ 
     where: { slug: 'evokah' }, 
-    defaults: { name: 'Evokah Joaillerie', domain: 'localhost' } 
+    defaults: { id: '11111111-1111-1111-1111-111111111111', name: 'Evokah Joaillerie', domain: 'localhost' } 
   });
   const cId = company.id;
   console.log('  ✅ Company:', company.name);

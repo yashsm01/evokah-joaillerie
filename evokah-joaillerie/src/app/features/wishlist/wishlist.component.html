@@ -60,7 +60,19 @@
 
           <!-- Product image -->
           <div class="wish-card-img">
-            <img [src]="item.img" [alt]="item.name" loading="lazy" />
+            <div class="card-slider">
+              <img [src]="getItemImage(item)" [alt]="item.name" loading="lazy" />
+              
+              <ng-container *ngIf="item.images && item.images.length > 1">
+                <button class="slider-arrow prev" (click)="prevImage(item, $event)" aria-label="Previous Image">‹</button>
+                <button class="slider-arrow next" (click)="nextImage(item, $event)" aria-label="Next Image">›</button>
+                <div class="slider-dots">
+                  <span *ngFor="let img of item.images; let i = index" 
+                        class="dot" [class.active]="i === (imageIndexes[item.id] || 0)"></span>
+                </div>
+              </ng-container>
+            </div>
+
             <button class="remove-btn" (click)="remove(item.id)" aria-label="Remove from wishlist"
                     title="Remove">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
