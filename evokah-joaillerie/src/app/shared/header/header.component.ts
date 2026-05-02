@@ -68,7 +68,12 @@ export class HeaderComponent {
   closeSearch()     { this.searchOpen    = false; }
   toggleThemeMenu() { this.themeMenuOpen = !this.themeMenuOpen; }
   toggleMobileNav() { this.mobileNavOpen = !this.mobileNavOpen; }
-  closeMobileNav()  { this.mobileNavOpen = false; }
+  closeMobileNav()  { this.mobileNavOpen = false; this.mobileSubMenuOpen = {}; }
+
+  mobileSubMenuOpen: { [key: string]: boolean } = {};
+  toggleMobileSub(menu: string) {
+    this.mobileSubMenuOpen[menu] = !this.mobileSubMenuOpen[menu];
+  }
 
   switchLang()      { this.langSvc.toggle(); }
 

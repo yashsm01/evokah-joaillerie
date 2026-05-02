@@ -239,15 +239,55 @@
 <!-- ── MOBILE NAV DRAWER ─────────────────────────────────── -->
 <nav class="mobile-nav" [class.open]="mobileNavOpen" aria-label="Mobile navigation">
   <div class="mobile-nav-inner">
-    <a routerLink="/shop" class="mob-link" (click)="closeMobileNav()">Shop All</a>
-    <div class="mob-sub-links">
-      <a [routerLink]="['/shop']" [queryParams]="{type: 'ring'}" class="mob-sub-link" (click)="closeMobileNav()">Rings</a>
-      <a [routerLink]="['/shop']" [queryParams]="{type: 'necklace'}" class="mob-sub-link" (click)="closeMobileNav()">Necklaces</a>
-      <a [routerLink]="['/shop']" [queryParams]="{type: 'earring'}" class="mob-sub-link" (click)="closeMobileNav()">Earrings</a>
-      <a [routerLink]="['/shop']" [queryParams]="{type: 'bracelet'}" class="mob-sub-link" (click)="closeMobileNav()">Bracelets</a>
+    <div class="mob-item-wrap">
+      <div class="mob-link-row">
+        <a routerLink="/shop" class="mob-link" (click)="closeMobileNav()">Shop All</a>
+        <button class="mob-toggle-btn" (click)="toggleMobileSub('shop')" aria-label="Toggle Shop submenu">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" [class.open]="mobileSubMenuOpen['shop']">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="mob-sub-links" [class.open]="mobileSubMenuOpen['shop']">
+        <a [routerLink]="['/shop']" [queryParams]="{type: 'ring'}" class="mob-sub-link" (click)="closeMobileNav()">Rings</a>
+        <a [routerLink]="['/shop']" [queryParams]="{type: 'necklace'}" class="mob-sub-link" (click)="closeMobileNav()">Necklaces</a>
+        <a [routerLink]="['/shop']" [queryParams]="{type: 'earring'}" class="mob-sub-link" (click)="closeMobileNav()">Earrings</a>
+        <a [routerLink]="['/shop']" [queryParams]="{type: 'bracelet'}" class="mob-sub-link" (click)="closeMobileNav()">Bracelets</a>
+      </div>
     </div>
-    <a routerLink="/engagement" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_engagement }}</a>
-    <a routerLink="/wedding" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_wedding }}</a>
+
+    <div class="mob-item-wrap">
+      <div class="mob-link-row">
+        <a routerLink="/engagement" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_engagement }}</a>
+        <button class="mob-toggle-btn" (click)="toggleMobileSub('engagement')" aria-label="Toggle Engagement submenu">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" [class.open]="mobileSubMenuOpen['engagement']">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="mob-sub-links" [class.open]="mobileSubMenuOpen['engagement']">
+        <a routerLink="/engagement" class="mob-sub-link" (click)="closeMobileNav()">Shop by Collection</a>
+        <a routerLink="/engagement" class="mob-sub-link" (click)="closeMobileNav()">Shop By Style</a>
+        <a routerLink="/engagement" class="mob-sub-link" (click)="closeMobileNav()">Shop By Shape</a>
+        <a routerLink="/engagement" class="mob-sub-link" (click)="closeMobileNav()">Shop By Stone</a>
+      </div>
+    </div>
+
+    <div class="mob-item-wrap">
+      <div class="mob-link-row">
+        <a routerLink="/wedding" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_wedding }}</a>
+        <button class="mob-toggle-btn" (click)="toggleMobileSub('wedding')" aria-label="Toggle Wedding submenu">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" [class.open]="mobileSubMenuOpen['wedding']">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="mob-sub-links" [class.open]="mobileSubMenuOpen['wedding']">
+        <a routerLink="/wedding" class="mob-sub-link" (click)="closeMobileNav()">Shop for Her</a>
+        <a routerLink="/wedding" class="mob-sub-link" (click)="closeMobileNav()">Shop for Him</a>
+        <a routerLink="/wedding" class="mob-sub-link" (click)="closeMobileNav()">Matched Sets</a>
+      </div>
+    </div>
     <a routerLink="/story" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_story }}</a>
     <a routerLink="/atelier" class="mob-link" (click)="closeMobileNav()">{{ langSvc.t().nav_atelier }}</a>
     <a routerLink="/wishlist" class="mob-link" (click)="closeMobileNav()">Wishlist</a>
